@@ -6,13 +6,13 @@ import dataset, llm, utils
 
 SEED = 42
 
-def extract_violation(name: str, n_shots: int = 3, n_rounds: int = 10) -> Dataset:
+def parse_violation(name: str, n_shots: int = 3, n_rounds: int = 10) -> Dataset:
     articles = dataset.load_articles(name)
     examples = dataset.load_examples('violation')
     to_violation = partial(utils.to_example, 'Article', 'Violation')
 
     examples = examples.map(to_violation)
-    created = Dataset.from_list([])
+    result = Dataset.from_list([])
     visited = set()
 
     for _ in tqdm(range(n_rounds)):
@@ -20,7 +20,7 @@ def extract_violation(name: str, n_shots: int = 3, n_rounds: int = 10) -> Datase
             if article in visited:
                 continue
 
-            merged = concatenate_datasets([examples, created])
+            merged = concatenate_datasets([examples, result])
             choice = merged.shuffle(SEED).select(range(n_shots))
             few_shot = '\n\n'.join([x['example'] for x in choice])
 
@@ -28,13 +28,13 @@ def extract_violation(name: str, n_shots: int = 3, n_rounds: int = 10) -> Datase
             if violation:
                 violation = utils.remove_starting(violation, 'Violation:')
                 _item = to_violation(dict(input=article, output=violation))
-                created = created.add_item(_item)
+                result = result.add_item(_item)
                 continue
 
             visited.add(article)
 
-    return created.remove_columns('example')
+    return result.remove_columns('example')
 
 if __name__ == '__main__':
-    for item in extract_violation('audiovisual_media'):
+    for item in parse_violation('audiovisual_media'):
         print(f'[bold green]Violation:[/bold green] {item["output"]}')
