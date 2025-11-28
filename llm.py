@@ -26,8 +26,8 @@ Now, begin the conversation.
 
 create_scenario_prompt = ChatPromptTemplate.from_template(
 """
-Simulate a conversation between two scenario experts, E1 and E2.
-Their task is to create realistic, real-life scenarios that illustrate specific violations. 
+Simulate a conversation between two scenario proposer, E1 and E2, who are tasked with creating realistic, real-life scenarios that illustrate a given violation. 
+Do not add comments, judgments, and explanations.
 
 {{few_shot | trim}}
 

@@ -3,9 +3,9 @@ from functools import partial
 from datasets import Dataset
 import llm, dataset, utils
 
-def main_loop(data: Dataset, to_example, prompt) -> Dataset:
+def main_loop(name: str, data: Dataset, to_example, prompt) -> Dataset:
     result = []
-    examples = dataset.load_examples('violation')
+    examples = dataset.load_examples(name)
 
     examples = examples.map(to_example)
     data = data.map(to_example)
@@ -21,11 +21,15 @@ def main_loop(data: Dataset, to_example, prompt) -> Dataset:
     ])
 
 def main():
-    to_example = partial(utils.to_example, 'Violation')
+    to_example = partial(utils.to_example, 'Article')
     articles = dataset.load_articles('audiovisual_media')
-    violations = main_loop(articles, to_example, llm.create_violation_prompt)
+    violations = main_loop('violation', articles, to_example, llm.create_violation_prompt)
 
-    for x in violations:
+    violations = violations.select(range(1))
+    to_example = partial(utils.to_example, 'Violation')
+    scenarios = main_loop('scenario', violations, to_example, llm.create_scenario_prompt)
+
+    for x in scenarios:
         print(repr(x))
 
 if __name__ == '__main__':
