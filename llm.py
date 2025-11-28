@@ -1,5 +1,5 @@
 from langchain_core.prompts import ChatPromptTemplate
-from typing import List
+from typing import List, Dict
 import module, re
 
 create_violation_prompt = ChatPromptTemplate.from_template(
@@ -14,7 +14,16 @@ Now, begin the conversation.
 Article: {{article | trim}}
 """.strip(), template_format='jinja2')
 
-def create_violation(few_shot: str, article: str) -> List[str]:
+def create_violation_example(x) -> Dict:
+    parts = [f'Article: {x["input"].strip()}']
+    parts.extend(
+        f'E{idx % 2 + 1}: {output.strip()}'
+        for idx, output in enumerate(x['outputs'])
+    )
+    x['example'] = '\n'.join(parts)
+    return x
+
+def create_violation_call(few_shot: str, article: str) -> List[str]:
     chain = (create_violation_prompt | module.llm)
     message = chain.invoke(dict(few_shot=few_shot, article=article))
     splits = re.split(r'(E[12]:)', message.content)
