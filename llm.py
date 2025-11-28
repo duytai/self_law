@@ -1,5 +1,4 @@
 from langchain_core.prompts import ChatPromptTemplate
-from typing import Dict
 import module
 
 create_violation_prompt = ChatPromptTemplate.from_template(
