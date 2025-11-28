@@ -25,12 +25,10 @@ def main():
     articles = dataset.load_articles('audiovisual_media')
     violations = main_loop('violation', articles, to_example, llm.create_violation_prompt)
 
-    violations = violations.select(range(1))
     to_example = partial(utils.to_example, 'Violation')
     scenarios = main_loop('scenario', violations, to_example, llm.create_scenario_prompt)
 
-    for x in scenarios:
-        print(repr(x))
+    print(len(scenarios))
 
 if __name__ == '__main__':
     main()
