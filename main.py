@@ -2,48 +2,47 @@ from tqdm import tqdm
 from rich import print
 from functools import partial
 from utils import ParseOptions
-from typing import Set
+from typing import List
 from datasets import Dataset, concatenate_datasets as concat
 import dataset, llm, utils
 
-def parse_violation(articles: Set[str], option: ParseOptions) -> Dataset:
-    examples = dataset.load_examples('violation')
-    to_violation = partial(utils.to_example, 'Article', 'Violation')
+def main_loop(inputs: List[str], options: ParseOptions):
+    fn = partial(utils.to_example, options.example_key, options.example_value)
+    examples = dataset.load_examples(options.example_name)
+    examples = examples.map(fn)
 
-    examples = examples.map(to_violation)
     result = Dataset.from_list([])
+    ignored_inputs = []
+    visited_outputs = []
 
-    for _ in tqdm(range(option.rounds)):
-        for article in sorted(articles):
+    for _ in tqdm(range(options.rounds)):
+        for input in inputs:
             merged = concat([examples, result])
-            choice = merged.shuffle(42).select(range(option.shots))
+            choice = merged.shuffle(options.seed).select(range(options.shots))
             few_shot = '\n\n'.join([x['example'] for x in choice])
 
-            violation = llm.create_violation(few_shot, article)
-            if violation:
-                violation = utils.remove_starting(violation, 'Violation:')
-                _item = to_violation(dict(input=article, output=violation))
-                result = result.add_item(_item)
+            response = options.llm_call(few_shot, input)
+            if response:
+                output = utils.remove_starting(response, options.example_starting)
+                if output not in visited_outputs:
+                    _item = fn(dict(input=input, output=output))
+                    result = result.add_item(_item)
+                    continue
+                visited_outputs.append(output)
                 continue
-            articles.remove(article)
+            ignored_inputs.append(input)
+        inputs = list(set(inputs) - set(ignored_inputs))
 
     return result.remove_columns('example')
 
-def parse_scenario(violations: Set[str], option: ParseOptions):
-    examples = dataset.load_examples('scenario')
-    to_scenario = partial(utils.to_example, 'Violation', 'Scenario')
-
-    examples = examples.map(to_scenario)
-    result = Dataset.from_list([])
-
-    for violation in sorted(violations):
-        print(f'[bold green]Violation: [/bold green] {violation}')
-
 if __name__ == '__main__':
-    parse_option = ParseOptions()
-
-    data = set(dataset.load_articles('audiovisual_media')['content'])
-    violations = parse_violation(data, parse_option)
-
-    data = set(violations['output'])
-    parse_scenario(data, parse_option)
+    parse_option = ParseOptions(
+        example_name='violation',
+        example_key='Regulation',
+        example_value='Violation',
+        llm_call=llm.create_violation
+    )
+    data = dataset.load_articles('audiovisual_media')['content']
+    violations = main_loop(data, parse_option)
+    for violation in violations:
+        print(violation['output'])
