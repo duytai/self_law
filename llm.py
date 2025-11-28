@@ -11,7 +11,7 @@ Response blank if nothing to extract.
 {{few_shot | trim}}
 
 Now, begin the conversation.
-Article: {{article | trim}}
+Article: {{input | trim}}
 """.strip(), template_format='jinja2')
 
 def create_violation_example(x) -> Dict:
@@ -23,9 +23,9 @@ def create_violation_example(x) -> Dict:
     x['example'] = '\n'.join(parts)
     return x
 
-def create_violation_call(few_shot: str, article: str) -> List[str]:
-    chain = (create_violation_prompt | module.llm)
-    message = chain.invoke(dict(few_shot=few_shot, article=article))
+def call(prompt: ChatPromptTemplate, few_shot: str, article: str) -> List[str]:
+    chain = prompt | module.llm
+    message = chain.invoke(dict(few_shot=few_shot, input=input))
     splits = re.split(r'(E[12]:)', message.content)
     return [
         v.strip()
