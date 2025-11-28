@@ -3,13 +3,14 @@ import module
 
 create_violation_prompt = ChatPromptTemplate.from_template(
 """
+Here are examples of articles and violations:
+
 {{few_shot | trim}}
 
 Now, from the article, extract one non-duplicate violation.
 If no violation is present, produce a blank output.
 
 Article: {{article | trim}}
-Violation:
 """.strip(), template_format='jinja2')
 
 def create_violation(few_shot: str, article: str) -> str:
@@ -19,13 +20,14 @@ def create_violation(few_shot: str, article: str) -> str:
 
 create_scenario_prompt = ChatPromptTemplate.from_template(
 """
+Here are examples of violations and scenarios:
+
 {{few_shot | trim}}
 
 Now, from the violation, create a real-life scenario.
 If no violation is present, produce a blank output.
 
 Violation: {{violation | trim}}
-Scenario:
 """.strip(), template_format='jinja2')
 
 def create_scenario(few_shot: str, violation: str) -> str:
