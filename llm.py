@@ -1,36 +1,25 @@
 from langchain_core.prompts import ChatPromptTemplate
-import module
+from typing import List
+import module, re
 
 create_violation_prompt = ChatPromptTemplate.from_template(
 """
-Here are examples of articles and violations:
+Simulate a conversation between two violation extractors, E1 and E2, who are tasked with extracting violations from a given regulation article.
+Each extracted violation is automic and standalone violation. 
+Response blank if nothing to extract.
 
 {{few_shot | trim}}
 
-Now, from the article, extract one non-duplicate violation.
-If no violation is present, produce a blank output.
-
+Now, begin the conversation.
 Article: {{article | trim}}
 """.strip(), template_format='jinja2')
 
-def create_violation(few_shot: str, article: str) -> str:
+def create_violation(few_shot: str, article: str) -> List[str]:
     chain = (create_violation_prompt | module.llm)
     message = chain.invoke(dict(few_shot=few_shot, article=article))
-    return message.content
-
-create_scenario_prompt = ChatPromptTemplate.from_template(
-"""
-Here are examples of violations and scenarios:
-
-{{few_shot | trim}}
-
-Now, from the violation, create a real-life scenario.
-If no violation is present, produce a blank output.
-
-Violation: {{violation | trim}}
-""".strip(), template_format='jinja2')
-
-def create_scenario(few_shot: str, violation: str) -> str:
-    chain = (create_scenario_prompt | module.llm)
-    message = chain.invoke(dict(few_shot=few_shot, violation=violation))
-    return message.content
+    splits = re.split(r'(E[12]:)', message.content)
+    return [
+        v.strip()
+        for k, v in zip(splits, splits[1:])
+        if k in {'E1:', 'E2:'} and v.strip()
+    ]
