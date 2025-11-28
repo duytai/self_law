@@ -55,4 +55,4 @@ if __name__ == '__main__':
     scenarios = main_loop(data, parse_option)
 
     for scenario in scenarios:
-        print(scenario)
+        print(f'[bold green]Scenario: [/bold green]{scenario["output"]}')

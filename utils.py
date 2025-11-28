@@ -7,7 +7,7 @@ class ParseOptions(BaseModel):
     example_value: str
     llm_call: Callable
     shots: int = 5
-    rounds: int = 10
+    rounds: int = 2
     seed: int = 42
     example_starting: str = None
 
