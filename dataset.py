@@ -5,7 +5,8 @@ from datasets import Dataset
 def load_articles(name: str) -> Dataset:
     data_dir = 'data/regulation/'
     data = safe_load(Path(data_dir + name + '.yaml').read_text())
-    return Dataset.from_list(data['articles'])
+    data = [dict(input=x['content'], outputs=[]) for x in data['articles']]
+    return Dataset.from_list(data)
 
 def load_examples(name: str) -> Dataset:
     data_dir = 'data/example/'
