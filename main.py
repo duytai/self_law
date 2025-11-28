@@ -44,5 +44,15 @@ if __name__ == '__main__':
     )
     data = dataset.load_articles('audiovisual_media')['content']
     violations = main_loop(data, parse_option)
-    for violation in violations:
-        print(violation['output'])
+
+    parse_option = ParseOptions(
+        example_name='scenario',
+        example_key='Violation',
+        example_value='Scenario',
+        llm_call=llm.create_scenario
+    )
+    data = violations['output']
+    scenarios = main_loop(data, parse_option)
+
+    for scenario in scenarios:
+        print(scenario)
