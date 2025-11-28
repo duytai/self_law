@@ -3,7 +3,7 @@ from functools import partial
 from datasets import Dataset
 import llm, dataset, utils
 
-def main_loop(data: Dataset, to_example, prompt):
+def main_loop(data: Dataset, to_example, prompt) -> Dataset:
     result = []
     examples = dataset.load_examples('violation')
 
@@ -15,11 +15,14 @@ def main_loop(data: Dataset, to_example, prompt):
         few_shot = '\n\n'.join([x['example'] for x in choice])
         result += llm.call(prompt, few_shot, item['query'])
 
-    return result
+    return Dataset.from_list([
+        dict(input=x, outputs=[])
+        for x in result
+    ])
 
 def main():
-    articles = dataset.load_articles('audiovisual_media')
     to_example = partial(utils.to_example, 'Violation')
+    articles = dataset.load_articles('audiovisual_media')
     violations = main_loop(articles, to_example, llm.create_violation_prompt)
 
     for x in violations:
