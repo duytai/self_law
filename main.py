@@ -1,12 +1,11 @@
 from tqdm import tqdm
 from rich import print
 from functools import partial
-from datasets import Dataset, concatenate_datasets
+from utils import ParseOptions
+from datasets import Dataset, concatenate_datasets as concat
 import dataset, llm, utils
 
-SEED = 42
-
-def parse_violation(name: str, n_shots: int = 3, n_rounds: int = 10) -> Dataset:
+def parse_violation(name: str, option: ParseOptions) -> Dataset:
     articles = dataset.load_articles(name)
     examples = dataset.load_examples('violation')
     to_violation = partial(utils.to_example, 'Article', 'Violation')
@@ -15,13 +14,13 @@ def parse_violation(name: str, n_shots: int = 3, n_rounds: int = 10) -> Dataset:
     result = Dataset.from_list([])
     visited = set()
 
-    for _ in tqdm(range(n_rounds)):
+    for _ in tqdm(range(option.rounds)):
         for article in articles['content']:
             if article in visited:
                 continue
 
-            merged = concatenate_datasets([examples, result])
-            choice = merged.shuffle(SEED).select(range(n_shots))
+            merged = concat([examples, result])
+            choice = merged.shuffle(42).select(range(option.shots))
             few_shot = '\n\n'.join([x['example'] for x in choice])
 
             violation = llm.create_violation(few_shot, article)
@@ -35,6 +34,14 @@ def parse_violation(name: str, n_shots: int = 3, n_rounds: int = 10) -> Dataset:
 
     return result.remove_columns('example')
 
+def parse_scenario(name: str, option: ParseOptions):
+    examples = dataset.load_examples('scenario')
+    to_violation = partial(utils.to_example, 'Violation', 'Scenario')
+    for example in examples:
+        print(example)
+
 if __name__ == '__main__':
-    for item in parse_violation('audiovisual_media'):
+    parse_option = ParseOptions()
+    for item in parse_violation('audiovisual_media', parse_option):
         print(f'[bold green]Violation:[/bold green] {item["output"]}')
+    parse_scenario('audiovisual_media', parse_option)
