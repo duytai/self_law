@@ -11,13 +11,13 @@ def main_loop(inputs: List[str], options: ParseOptions):
     examples = dataset.load_examples(options.example_name)
     examples = examples.map(fn)
 
-    result = Dataset.from_list([])
+    created = Dataset.from_list([])
     ignored_inputs = []
     visited_outputs = []
 
     for _ in tqdm(range(options.rounds)):
         for input in inputs:
-            merged = concat([examples, result])
+            merged = concat([examples, created])
             choice = merged.shuffle(options.seed).select(range(options.shots))
             few_shot = '\n\n'.join([x['example'] for x in choice])
 
@@ -26,14 +26,14 @@ def main_loop(inputs: List[str], options: ParseOptions):
                 output = utils.remove_starting(response, options.example_starting)
                 if output not in visited_outputs:
                     _item = fn(dict(input=input, output=output))
-                    result = result.add_item(_item)
+                    created = created.add_item(_item)
                     continue
                 visited_outputs.append(output)
                 continue
             ignored_inputs.append(input)
         inputs = list(set(inputs) - set(ignored_inputs))
 
-    return result.remove_columns('example')
+    return created.remove_columns('example')
 
 if __name__ == '__main__':
     parse_option = ParseOptions(
@@ -43,7 +43,7 @@ if __name__ == '__main__':
         llm_call=llm.create_violation
     )
     data = dataset.load_articles('audiovisual_media')['content']
-    violations = main_loop(data, parse_option)
+    result = main_loop(data, parse_option)
 
     parse_option = ParseOptions(
         example_name='scenario',
@@ -51,7 +51,7 @@ if __name__ == '__main__':
         example_value='Scenario',
         llm_call=llm.create_scenario
     )
-    data = violations['output']
+    data = result['output']
     scenarios = main_loop(data, parse_option)
 
     for scenario in scenarios:
