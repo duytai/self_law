@@ -28,7 +28,8 @@ def main():
     to_example = partial(utils.to_example, 'Violation')
     scenarios = main_loop('scenario', violations, to_example, llm.create_scenario_prompt)
 
-    print(len(scenarios))
+    for scenario in scenarios:
+        print(f'{scenario["input"]!r}')
 
 if __name__ == '__main__':
     main()
