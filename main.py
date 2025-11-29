@@ -11,7 +11,7 @@ def refine_loop(
     to_example: Callable,
     prompt: ChatPromptTemplate,
     seed: int = 42,
-    few_shot_size: int = 5,
+    few_shot_size: int = 3,
 ) -> Tuple[Dataset, Dataset]:
     feedback, refine = [], []
     examples = dataset.load_examples(name)
@@ -44,7 +44,7 @@ def generate_loop(
     to_example: Callable,
     prompt: ChatPromptTemplate,
     seed: int = 42,
-    few_shot_size: int = 5,
+    few_shot_size: int = 3,
 ) -> Dataset:
     result = []
     examples = dataset.load_examples(name)
