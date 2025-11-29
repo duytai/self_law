@@ -1,8 +1,9 @@
 from tqdm import tqdm
 from functools import partial
-from datasets import Dataset
+from datasets import Dataset, concatenate_datasets as concat
 from typing import Callable, Tuple
 from langchain_core.prompts import ChatPromptTemplate
+from rich import print
 import llm, dataset, utils
 
 def refine_loop(
@@ -63,20 +64,24 @@ def generate_loop(
     return Dataset.from_list(result)
 
 def main():
-    to_example = partial(utils.to_example, 'Article')
     articles = dataset.load_articles('audiovisual_media')
+
+    to_example = partial(utils.to_example, 'Article')
     violations = generate_loop('violation', articles, to_example, llm.create_violation_prompt)
 
     to_example = partial(utils.to_example, 'Violation')
-    violations = violations.select(range(1))
     scenarios = generate_loop('scenario', violations, to_example, llm.create_scenario_prompt)
 
+    False and utils.avg_similarity([x['input'] for x in scenarios])
+
+    scenarios = scenarios.select(range(180))
     to_example = partial(utils.to_example, 'Scenario')
-    scenarios = scenarios.select(range(1))
     feedback, refine = refine_loop('refinement', scenarios, to_example, llm.refine_scenario_prompt)
-    print(len(refine))
-    for f in refine:
-        print(f)
+
+    combined = concat([scenarios, refine])
+    for r in combined:
+        print(f'[bold green]Scenario: [/bold green] {r["input"]}')
+    print(f'ALL: {len(combined)}')
 
 if __name__ == '__main__':
     main()
