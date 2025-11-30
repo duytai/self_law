@@ -71,17 +71,14 @@ def main():
 
     to_example = partial(utils.to_example, 'Violation')
     scenarios = generate_loop('scenario', violations, to_example, llm.create_scenario_prompt)
-
     False and utils.avg_similarity([x['input'] for x in scenarios])
 
     scenarios = scenarios.select(range(180))
     to_example = partial(utils.to_example, 'Scenario')
-    feedback, refine = refine_loop('refinement', scenarios, to_example, llm.refine_scenario_prompt)
+    feedback = generate_loop('refinement', scenarios, to_example, llm.refine_scenario_prompt)
 
-    combined = concat([scenarios, refine])
-    for r in combined:
-        print(f'[bold green]Scenario: [/bold green] {r["input"]}')
-    print(f'ALL: {len(combined)}')
+    for r in feedback:
+        print(f'[bold green]Feed:[/bold green] {r["input"]}')
 
 if __name__ == '__main__':
     main()
