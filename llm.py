@@ -22,7 +22,7 @@ Use the following few-shot examples as guidance:
 {{few_shot | trim}}
 
 Now, start the conversation.
-{{query}}
+{{query | trim}}
 """.strip(), template_format='jinja2')
 
 create_scenario_prompt = ChatPromptTemplate.from_template(
@@ -34,7 +34,7 @@ Use the following few-shot examples as guidance:
 {{few_shot | trim}}
 
 Now, start the conversation.
-{{query}}
+{{query | trim}}
 """.strip(), template_format='jinja2')
 
 refine_scenario_prompt = ChatPromptTemplate.from_template(
@@ -47,5 +47,18 @@ Use the following few-shot examples as guidance:
 {{few_shot | trim}}
 
 Now, start the conversation.
-{{query}}
+{{query | trim}}
+""".strip(), template_format='jinja2')
+
+filter_scenario_prompt = ChatPromptTemplate.from_template(
+"""
+Construct a Q&A session between two experts, E1 and E2.
+Rules: E1 speaks first, then E2 reply in order.
+Task: E2 determines whether E1 is a scenario or not a scenario.
+
+Use the following few-shot examples as guidance:
+{{few_shot | trim}}
+
+Now, start the conversation
+{{query | trim}}
 """.strip(), template_format='jinja2')
