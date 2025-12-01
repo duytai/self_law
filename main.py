@@ -12,16 +12,16 @@ def filter_loop(
     prompt: ChatPromptTemplate,
     few_shot_size: int = 4,
 ) -> Dataset:
-    result = []
     examples = dataset.load_examples(name)
     parts = [
         data['input'][i * few_shot_size: (i + 1) * few_shot_size]
         for i in range(few_shot_size)
         if i * few_shot_size < len(data['input'])
     ]
+    result = []
 
-    choice = examples.select(range(few_shot_size))
     for part in parts:
+        choice = examples.select(range(few_shot_size))
         shots = [
             f'Q: {item["input"]}\nA: {item["outputs"][0]}'
             for item in choice
@@ -31,9 +31,12 @@ def filter_loop(
             f'Q{idx + 1}: {item}'
             for idx, item in enumerate(part)
         )
-        response = llm.call(prompt, few_shot, query)
-        print(response)
-        break
+        labels = llm.call(prompt, few_shot, query)
+        assert len(labels) == len(part)
+        for label, text in zip(labels, part):
+            assert label in ['True', 'False']
+            if label == 'True':
+                result.append(dict(input=text, outputs=[]))
 
     return Dataset.from_list(result)
 
@@ -77,12 +80,10 @@ def main():
     False and utils.avg_similarity([x['input'] for x in scenarios])
     print(f'[bold blue]Scenario: {len(scenarios)}[/bold blue]')
 
-    scenarios = scenarios.select(range(2))
     to_example = partial(utils.to_example, 'Scenario')
     feedback = generate_loop('refinement', scenarios, to_example, llm.refine_scenario_prompt)
     print(f'[bold blue]Feedback: {len(feedback)}[/bold blue]')
 
-    feedback = feedback.select(range(10))
     answers = filter_loop('fil_scenario', feedback, llm.filter_scenario_prompt)
     for r in answers:
         print(f'[bold green]Scenario:[/bold green] {r["input"]}')
