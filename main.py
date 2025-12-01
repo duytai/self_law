@@ -4,22 +4,20 @@ from datasets import Dataset, concatenate_datasets as concat
 from typing import Callable, Tuple
 from langchain_core.prompts import ChatPromptTemplate
 from rich import print
-import llm, dataset, utils
+import llm, dataset, utils, math
 
 def filter_loop(
     name: str,
     data: Dataset,
     prompt: ChatPromptTemplate,
-    few_shot_size: int = 4,
+    few_shot_size: int = 5,
 ) -> Dataset:
     examples = dataset.load_examples(name)
     parts = [
-        data['input'][i * few_shot_size: (i + 1) * few_shot_size]
-        for i in range(few_shot_size)
-        if i * few_shot_size < len(data['input'])
+        data['input'][i * few_shot_size:(i + 1) * few_shot_size]
+        for i in range(math.ceil(len(data['input']) / few_shot_size))
     ]
     result = []
-
     for part in parts:
         choice = examples.select(range(few_shot_size))
         shots = [
@@ -84,11 +82,11 @@ def main():
     feedback = generate_loop('refinement', scenarios, to_example, llm.refine_scenario_prompt)
     print(f'[bold blue]Feedback: {len(feedback)}[/bold blue]')
 
-    answers = filter_loop('fil_scenario', feedback, llm.filter_scenario_prompt)
-    for r in answers:
-        print(f'[bold green]Scenario:[/bold green] {r["input"]}')
+    filtered = filter_loop('fil_scenario', feedback, llm.filter_scenario_prompt)
+    print(f'[bold blue]Filtered: {len(filtered)}[/bold blue]')
 
-    print(f'[bold blue]Final: {len(answers)}[/bold blue]')
+    scenarios = concat([scenarios, filtered])
+    print(f'[bold blue]Final: {len(scenarios)}[/bold blue]')
 
 if __name__ == '__main__':
     main()
