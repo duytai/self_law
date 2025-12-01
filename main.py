@@ -18,7 +18,7 @@ def filter_loop(
         for i in range(math.ceil(len(data['input']) / few_shot_size))
     ]
     result = []
-    for part in parts:
+    for part in tqdm(parts):
         choice = examples.select(range(few_shot_size))
         shots = [
             f'Q: {item["input"]}\nA: {item["outputs"][0]}'
@@ -83,6 +83,9 @@ def main():
     scenarios = concat([scenarios, filtered])
     print(f'[bold blue]Final: {len(scenarios)}[/bold blue]')
     False and utils.avg_similarity([x['input'] for x in scenarios])
+    print(f'[bold green]Final: {len(scenarios)}[/bold green]')
+    scenarios = scenarios.filter(lambda x: x['input'].find('refined scenario:') == -1)
+    print(f'[bold green]Final: {len(scenarios)}[/bold green]')
 
 if __name__ == '__main__':
     main()
