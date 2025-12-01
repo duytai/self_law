@@ -135,10 +135,10 @@ def main():
         llm.standard_eval_scenario_prompt,
         ['VIOLATION', 'AMBIGUOUS', 'LEGAL']
     )
-    for r in classified:
-        print(f'[bold green]Scenario:[/bold green] {r["input"]}')
-        print(f'[bold green]Label:[/bold green] {r["outputs"][0]}')
-        print('----')
+
+    for l in ['VIOLATION', 'AMBIGUOUS', 'LEGAL']:
+        violations = classified.filter(lambda x: x['outputs'][0] == l)
+        print(f'[bold blue]{l}: [/bold blue]{len(violations)}')
 
 if __name__ == '__main__':
     main()
