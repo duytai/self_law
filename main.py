@@ -65,17 +65,12 @@ def generate_loop(
 def main():
     articles = dataset.load_articles('audiovisual_media')
 
-    articles = articles.select(range(2))
-
     to_example = partial(utils.to_example, 'Article')
     violations = generate_loop('violation', articles, to_example, llm.create_violation_prompt)
     print(f'[bold blue]Violation: {len(violations)}[/bold blue]')
 
-    violations = violations.select(range(2))
-
     to_example = partial(utils.to_example, 'Violation')
     scenarios = generate_loop('scenario', violations, to_example, llm.create_scenario_prompt)
-    False and utils.avg_similarity([x['input'] for x in scenarios])
     print(f'[bold blue]Scenario: {len(scenarios)}[/bold blue]')
 
     to_example = partial(utils.to_example, 'Scenario')
@@ -87,6 +82,7 @@ def main():
 
     scenarios = concat([scenarios, filtered])
     print(f'[bold blue]Final: {len(scenarios)}[/bold blue]')
+    False and utils.avg_similarity([x['input'] for x in scenarios])
 
 if __name__ == '__main__':
     main()
