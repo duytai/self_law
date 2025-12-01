@@ -1,8 +1,8 @@
 from tqdm import tqdm
 from functools import partial
 from datasets import Dataset, concatenate_datasets as concat
-from typing import Callable, Tuple
 from langchain_core.prompts import ChatPromptTemplate
+from typing import Callable
 from rich import print
 import llm, dataset, utils, math
 
@@ -63,7 +63,8 @@ def generate_loop(
     return Dataset.from_list(result)
 
 def main():
-    articles = dataset.load_articles('audiovisual_media')
+    name  = 'audiovisual_media'
+    articles = dataset.load_articles(name)
 
     to_example = partial(utils.to_example, 'Article')
     violations = generate_loop('violation', articles, to_example, llm.create_violation_prompt)
@@ -86,6 +87,8 @@ def main():
     print(f'[bold blue]Final: {len(scenarios)}[/bold blue]')
     scenarios = scenarios.filter(lambda x: x['input'].find('refined scenario:') == -1)
     print(f'[bold blue]Final: {len(scenarios)}[/bold blue]')
+
+    scenarios.to_json(f'output/{name}.jsonl')
 
 if __name__ == '__main__':
     main()
