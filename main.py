@@ -62,7 +62,7 @@ def generate_loop(
 
     return Dataset.from_list(result)
 
-def main():
+def generate_scenario():
     name  = 'audiovisual_media'
     articles = dataset.load_articles(name)
 
@@ -89,6 +89,14 @@ def main():
     print(f'[bold blue]Final: {len(scenarios)}[/bold blue]')
 
     scenarios.to_json(f'output/{name}.jsonl')
+
+def main():
+    name  = 'audiovisual_media'
+    scenarios = dataset.load_outputs(name)
+    scenarios = scenarios.select(range(3))
+    for scenario in scenarios['input']:
+        print(scenario)
+        print('----')
 
 if __name__ == '__main__':
     main()
