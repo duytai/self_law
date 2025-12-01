@@ -53,13 +53,24 @@ Now, start the conversation.
 
 filter_scenario_prompt = ChatPromptTemplate.from_template(
 """
-Construct a Q&A session between two experts, E1 and E2.
-Rules: E1 speaks first, then E2 reply in order.
-Task: E2 determines whether E1 is a scenario or not a scenario.
+Your task is to classify each Q as either a Scenario or Not a Scenario.
+Scenario (True):
+- The text only describes an event, situation, or narrative with no advice, no evaluation, and no recommendations.
+Not a Scenario (False):
+- The text contains advice, suggestions, instructions, mitigation strategies, or guidance.
+- The text contains evaluation, judgment, critique, or analysis.
+- The text mixes description of events with advice or evaluation (this is still False).
 
 Use the following few-shot examples as guidance:
 {{few_shot | trim}}
 
-Now, start the conversation
+Now classify the following questions:
 {{query | trim}}
+
+Answer format:
+A1:
+A2:
+A3:
+A4:
+...
 """.strip(), template_format='jinja2')

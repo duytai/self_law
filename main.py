@@ -21,6 +21,20 @@ def filter_loop(
     ]
 
     choice = examples.select(range(few_shot_size))
+    for part in parts:
+        shots = [
+            f'Q: {item["input"]}\nA: {item["outputs"][0]}'
+            for item in choice
+        ]
+        few_shot = '\n\n'.join(shots)
+        query = '\n\n'.join(
+            f'Q{idx + 1}: {item}'
+            for idx, item in enumerate(part)
+        )
+        response = llm.call(prompt, few_shot, query)
+        print(response)
+        break
+
     return Dataset.from_list(result)
 
 def generate_loop(
