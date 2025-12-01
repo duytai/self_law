@@ -83,9 +83,9 @@ def main():
     scenarios = concat([scenarios, filtered])
     print(f'[bold blue]Final: {len(scenarios)}[/bold blue]')
     False and utils.avg_similarity([x['input'] for x in scenarios])
-    print(f'[bold green]Final: {len(scenarios)}[/bold green]')
+    print(f'[bold blue]Final: {len(scenarios)}[/bold blue]')
     scenarios = scenarios.filter(lambda x: x['input'].find('refined scenario:') == -1)
-    print(f'[bold green]Final: {len(scenarios)}[/bold green]')
+    print(f'[bold blue]Final: {len(scenarios)}[/bold blue]')
 
 if __name__ == '__main__':
     main()
