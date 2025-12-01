@@ -1,0 +1,20 @@
+-
+  input: A Riyadh-based influencer streams a live video discussing sensitive social issues, using language and imagery that contradict the Kingdom’s Media Policy, leading to a warning from regulatory authorities.
+  outputs:
+    - VIOLATION
+-
+  input: A Riyadh-based influencer streams a live video discussing social issues in a nuanced way, with some language that might slightly deviate from the official guidelines.
+  outputs:
+    - AMBIGUOUS
+-
+  input: A small production company in Dammam distributes a short film containing scenes that promote values conflicting with the Kingdom’s cultural norms, without submitting the content for review or approval.
+  outputs:
+    - VIOLATION
+-
+  input: A small production company in Dammam distributes a short film that touches on themes potentially sensitive to local cultural norms, but does not contain overtly prohibited content, and it is unclear if prior review was required.
+  outputs:
+    - AMBIGUOUS
+- 
+  input: A small production company in Dammam distributes a short film that aligns with local cultural norms and has been reviewed and approved according to official media regulations.
+  outputs:
+    - LEGAL

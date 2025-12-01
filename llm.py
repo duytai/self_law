@@ -74,3 +74,21 @@ A3:
 A4:
 ...
 """.strip(), template_format='jinja2')
+
+standard_eval_scenario_prompt = ChatPromptTemplate.from_template(
+"""
+Classify the following scenario under Saudi Arabian law as VIOLATION, LEGAL, or AMBIGUOUS.
+
+Use the following few-shot examples as guidance:
+{{few_shot | trim}}
+
+Now classify the following scenarios:
+{{query | trim}}
+
+Answer format:
+A1:
+A2:
+A3:
+A4:
+...
+""".strip(), template_format='jinja2')

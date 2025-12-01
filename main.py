@@ -2,7 +2,7 @@ from tqdm import tqdm
 from functools import partial
 from datasets import Dataset, concatenate_datasets as concat
 from langchain_core.prompts import ChatPromptTemplate
-from typing import Callable
+from typing import Callable, List, Tuple
 from rich import print
 import llm, dataset, utils, math
 
@@ -11,6 +11,8 @@ def filter_loop(
     data: Dataset,
     prompt: ChatPromptTemplate,
     few_shot_size: int = 5,
+    labels: Tuple[str] = ('True', 'False'),
+    selected_label: str = 'True'
 ) -> Dataset:
     examples = dataset.load_examples(name)
     parts = [
@@ -32,9 +34,42 @@ def filter_loop(
         labels = llm.call(prompt, few_shot, query)
         assert len(labels) == len(part)
         for label, text in zip(labels, part):
-            assert label in ['True', 'False']
-            if label == 'True':
+            assert label in labels
+            if label == selected_label:
                 result.append(dict(input=text, outputs=[]))
+
+    return Dataset.from_list(result)
+
+def classify_loop(
+    name: str,
+    data: Dataset,
+    prompt: ChatPromptTemplate,
+    labels: List[str],
+    few_shot_size: int = 5,
+) -> Dataset:
+    examples = dataset.load_examples(name)
+    parts = [
+        data['input'][i * few_shot_size:(i + 1) * few_shot_size]
+        for i in range(math.ceil(len(data['input']) / few_shot_size))
+    ]
+    result = []
+    for part in tqdm(parts):
+        choice = examples.select(range(few_shot_size))
+        shots = [
+            f'Q: {item["input"]}\nA: {item["outputs"][0]}'
+            for item in choice
+        ]
+        few_shot = '\n\n'.join(shots)
+        query = '\n\n'.join(
+            f'Q{idx + 1}: {item}'
+            for idx, item in enumerate(part)
+        )
+        response = llm.call(prompt, few_shot, query)
+        assert len(response) == len(part)
+        for p, text in zip(response, part):
+            assert p.startswith(tuple(labels))
+            selected = next((label for label in labels if p.startswith(label)), None)
+            result.append(dict(input=text, outputs=[selected]))
 
     return Dataset.from_list(result)
 
@@ -93,9 +128,16 @@ def generate_scenario():
 def main():
     name  = 'audiovisual_media'
     scenarios = dataset.load_outputs(name)
-    scenarios = scenarios.select(range(3))
-    for scenario in scenarios['input']:
-        print(scenario)
+
+    classified = classify_loop(
+        'eval_scenario',
+        scenarios,
+        llm.standard_eval_scenario_prompt,
+        ['VIOLATION', 'AMBIGUOUS', 'LEGAL']
+    )
+    for r in classified:
+        print(f'[bold green]Scenario:[/bold green] {r["input"]}')
+        print(f'[bold green]Label:[/bold green] {r["outputs"][0]}')
         print('----')
 
 if __name__ == '__main__':
