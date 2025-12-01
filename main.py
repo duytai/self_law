@@ -21,20 +21,6 @@ def filter_loop(
     ]
 
     choice = examples.select(range(few_shot_size))
-    for part in parts:
-        questions, answers = [], []
-        for item in choice:
-            questions.append(f'E1: {item["input"].strip()}')
-            answers.append(f'E2: {item["outputs"][0]}')
-        few_shot = '\n\n'.join(questions) + '\n\n' + '\n\n'.join(answers)
-        query = '\n\n'.join([f'E1: {x}' for x in part])
-
-        response = llm.call(prompt, few_shot, query)
-        assert len(response) == len(part)
-        for pos, val in enumerate(response):
-            if val == 'True':
-                result.append(dict(input=part[pos], outputs=[]))
-
     return Dataset.from_list(result)
 
 def generate_loop(

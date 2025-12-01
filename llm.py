@@ -5,11 +5,12 @@ import module, re
 def call(prompt: ChatPromptTemplate, few_shot: str, query: str) -> List[str]:
     chain = prompt | module.llm
     message = chain.invoke(dict(few_shot=few_shot, query=query))
-    splits = re.split(r'(E[12]:)', message.content)
+    pattern = r'([A-Z]+[0-9]*:)'
+    splits = re.split(pattern, message.content)
     return [
         v.strip()
         for k, v in zip(splits, splits[1:])
-        if k in {'E1:', 'E2:'} and v.strip()
+        if re.match(pattern, k) and v.strip()
     ]
 
 create_violation_prompt = ChatPromptTemplate.from_template(
