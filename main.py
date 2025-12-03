@@ -114,20 +114,12 @@ def generate_scenario():
     print(f'[bold blue]Feedback: {len(feedback)}[/bold blue]')
 
     filtered = filter_loop('fil_scenario', feedback, llm.filter_scenario_prompt)
-    print(f'[bold blue]Filtered: {len(filtered)}[/bold blue]')
+    print(f'[bold blue]Refined: {len(filtered)}[/bold blue]')
 
     scenarios = concat([scenarios, filtered])
-    print(f'[bold blue]Final: {len(scenarios)}[/bold blue]')
     False and utils.avg_similarity([x['input'] for x in scenarios])
-    print(f'[bold blue]Final: {len(scenarios)}[/bold blue]')
     scenarios = scenarios.filter(lambda x: x['input'].find('refined scenario:') == -1)
-    print(f'[bold blue]Final: {len(scenarios)}[/bold blue]')
-
-    scenarios.to_json(f'output/{name}.jsonl')
-
-def main():
-    name  = 'audiovisual_media'
-    scenarios = dataset.load_outputs(name)
+    print(f'[bold blue]Raw: {len(scenarios)}[/bold blue]')
 
     classified = classify_loop(
         'eval_scenario',
@@ -136,9 +128,11 @@ def main():
         ['VIOLATION', 'AMBIGUOUS', 'LEGAL']
     )
 
-    for l in ['VIOLATION', 'AMBIGUOUS', 'LEGAL']:
-        violations = classified.filter(lambda x: x['outputs'][0] == l)
-        print(f'[bold blue]{l}: [/bold blue]{len(violations)}')
+    classified.to_json(f'output/{name}.jsonl')
+    print(f'[bold blue]Classified: {len(classified)}[/bold blue]')
+
+def main():
+    generate_scenario()
 
 if __name__ == '__main__':
     main()
