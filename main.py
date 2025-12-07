@@ -11,7 +11,6 @@ def filter_loop(
     data: Dataset,
     prompt: ChatPromptTemplate,
     few_shot_size: int = 5,
-    labels: Tuple[str] = ('True', 'False'),
     selected_label: str = 'True'
 ) -> Dataset:
     examples = dataset.load_examples(name)
@@ -98,7 +97,7 @@ def generate_loop(
     return Dataset.from_list(result)
 
 def generate_scenario():
-    name  = 'audiovisual_media'
+    name  = 'public_decency'
     articles = dataset.load_articles(name)
 
     to_example = partial(utils.to_example, 'Article')
