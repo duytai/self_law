@@ -18,8 +18,12 @@ def filter_loop(
         data['input'][i * few_shot_size:(i + 1) * few_shot_size]
         for i in range(math.ceil(len(data['input']) / few_shot_size))
     ]
+    prevs = [
+        data['prev'][i * few_shot_size:(i + 1) * few_shot_size]
+        for i in range(math.ceil(len(data['input']) / few_shot_size))
+    ]
     result = []
-    for part in tqdm(parts):
+    for part, prev in tqdm(zip(parts, prevs)):
         choice = examples.select(range(few_shot_size))
         shots = [
             f'Q: {item["input"]}\nA: {item["outputs"][0]}'
@@ -32,10 +36,10 @@ def filter_loop(
         )
         labels = llm.call(prompt, few_shot, query)
         if len(labels) == len(part):
-            for label, text in zip(labels, part):
+            for label, text, prev_ in zip(labels, part, prev):
                 if label in labels:
                     if label == selected_label:
-                        result.append(dict(input=text, outputs=[]))
+                        result.append(dict(input=text, outputs=[], prev=prev_))
 
     return Dataset.from_list(result)
 
@@ -51,8 +55,12 @@ def classify_loop(
         data['input'][i * few_shot_size:(i + 1) * few_shot_size]
         for i in range(math.ceil(len(data['input']) / few_shot_size))
     ]
+    prevs = [
+        data['prev'][i * few_shot_size:(i + 1) * few_shot_size]
+        for i in range(math.ceil(len(data['input']) / few_shot_size))
+    ]
     result = []
-    for part in tqdm(parts):
+    for part, prev in tqdm(zip(parts, prevs)):
         choice = examples.select(range(few_shot_size))
         shots = [
             f'Q: {item["input"]}\nA: {item["outputs"][0]}'
@@ -65,10 +73,10 @@ def classify_loop(
         )
         response = llm.call(prompt, few_shot, query)
         if len(response) == len(part):
-            for p, text in zip(response, part):
+            for p, text, prev_ in zip(response, part, prev):
                 if p.startswith(tuple(labels)):
                     selected = next((label for label in labels if p.startswith(label)), None)
-                    result.append(dict(input=text, outputs=[selected]))
+                    result.append(dict(input=text, outputs=[selected], prev=prev_))
 
     return Dataset.from_list(result)
 
@@ -91,53 +99,57 @@ def generate_loop(
         few_shot = '\n\n'.join([x['example'] for x in choice])
         response = llm.call(prompt, few_shot, item['query'])
         # handle response
-        response = [dict(input=x, outputs=[]) for x in response]
+        prev = [item['input']]
+        if 'prev' in item:
+            prev += item['prev'] 
+        response = [dict(input=x, outputs=[], prev=prev) for x in response]
         result.extend(response)
 
     return Dataset.from_list(result)
 
 def generate_scenario():
-    name  = 'combating_crimes_of_terrorism_and_its_financing'
-    articles = dataset.load_articles(name)
+    names = [
+        "audiovisual_media",
+        "basic_law_of_governance",
+        "combating_crimes_of_terrorism_and_its_financing",
+        "crime",
+        "printed_materials_and_publication",
+        "public_decency",
+        "shura_council",
+    ]
+    for name in tqdm(names, desc='Regulation'):
+        articles = dataset.load_articles(name)
+        print(len(articles))
 
-    to_example = partial(utils.to_example, 'Article')
-    violations = generate_loop('violation', articles, to_example, llm.create_violation_prompt)
-    print(f'[bold blue]Violation: {len(violations)}[/bold blue]')
-    for v in violations:
-        print(v)
-    exit(0)
+        to_example = partial(utils.to_example, 'Article')
+        violations = generate_loop('violation', articles, to_example, llm.create_violation_prompt)
+        print(f'[bold blue]Violation: {len(violations)}[/bold blue]')
 
-    to_example = partial(utils.to_example, 'Violation')
-    scenarios = generate_loop('scenario', violations, to_example, llm.create_scenario_prompt)
-    print(f'[bold blue]Scenario: {len(scenarios)}[/bold blue]')
+        to_example = partial(utils.to_example, 'Violation')
+        scenarios = generate_loop('scenario', violations, to_example, llm.create_scenario_prompt)
+        print(f'[bold blue]Scenario: {len(scenarios)}[/bold blue]')
 
-    to_example = partial(utils.to_example, 'Scenario')
-    feedback = generate_loop('refinement', scenarios, to_example, llm.refine_scenario_prompt)
-    print(f'[bold blue]Feedback: {len(feedback)}[/bold blue]')
+        to_example = partial(utils.to_example, 'Scenario')
+        feedback = generate_loop('refinement', scenarios, to_example, llm.refine_scenario_prompt)
+        print(f'[bold blue]Feedback: {len(feedback)}[/bold blue]')
 
-    filtered = filter_loop('fil_scenario', feedback, llm.filter_scenario_prompt)
-    print(f'[bold blue]Refined: {len(filtered)}[/bold blue]')
+        filtered = filter_loop('fil_scenario', feedback, llm.filter_scenario_prompt)
+        print(f'[bold blue]Refined: {len(filtered)}[/bold blue]')
 
-    scenarios = concat([scenarios, filtered])
-    False and utils.avg_similarity([x['input'] for x in scenarios])
-    scenarios = scenarios.filter(lambda x: x['input'].find('refined scenario:') == -1)
-    print(f'[bold blue]Raw: {len(scenarios)}[/bold blue]')
+        scenarios = concat([scenarios, filtered])
+        False and utils.avg_similarity([x['input'] for x in scenarios])
+        scenarios = scenarios.filter(lambda x: x['input'].find('refined scenario:') == -1)
+        print(f'[bold blue]Raw: {len(scenarios)}[/bold blue]')
 
-    classified = classify_loop(
-        'eval_scenario',
-        scenarios,
-        llm.standard_eval_scenario_prompt,
-        ['VIOLATION', 'AMBIGUOUS', 'LEGAL']
-    )
+        classified = classify_loop(
+            'eval_scenario',
+            scenarios,
+            llm.standard_eval_scenario_prompt,
+            ['VIOLATION', 'AMBIGUOUS', 'LEGAL']
+        )
 
-    classified.to_json(f'output/{name}.jsonl')
-    print(f'[bold blue]Classified: {len(classified)}[/bold blue]')
-
-def adversarial_scenario():
-    outputs = dataset.load_outputs('public_decency')
-    for output in outputs['input'][:10]:
-        print(output)
-        print('----')
+        classified.to_json(f'output/{name}.jsonl')
+        print(f'[bold blue]Classified: {len(classified)}[/bold blue]')
 
 def main():
     #  adversarial_scenario()
