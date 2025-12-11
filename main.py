@@ -31,11 +31,11 @@ def filter_loop(
             for idx, item in enumerate(part)
         )
         labels = llm.call(prompt, few_shot, query)
-        assert len(labels) == len(part)
-        for label, text in zip(labels, part):
-            assert label in labels
-            if label == selected_label:
-                result.append(dict(input=text, outputs=[]))
+        if len(labels) == len(part):
+            for label, text in zip(labels, part):
+                if label in labels:
+                    if label == selected_label:
+                        result.append(dict(input=text, outputs=[]))
 
     return Dataset.from_list(result)
 
@@ -64,11 +64,11 @@ def classify_loop(
             for idx, item in enumerate(part)
         )
         response = llm.call(prompt, few_shot, query)
-        assert len(response) == len(part)
-        for p, text in zip(response, part):
-            assert p.startswith(tuple(labels))
-            selected = next((label for label in labels if p.startswith(label)), None)
-            result.append(dict(input=text, outputs=[selected]))
+        if len(response) == len(part):
+            for p, text in zip(response, part):
+                if p.startswith(tuple(labels)):
+                    selected = next((label for label in labels if p.startswith(label)), None)
+                    result.append(dict(input=text, outputs=[selected]))
 
     return Dataset.from_list(result)
 
@@ -97,12 +97,15 @@ def generate_loop(
     return Dataset.from_list(result)
 
 def generate_scenario():
-    name  = 'public_decency'
+    name  = 'combating_crimes_of_terrorism_and_its_financing'
     articles = dataset.load_articles(name)
 
     to_example = partial(utils.to_example, 'Article')
     violations = generate_loop('violation', articles, to_example, llm.create_violation_prompt)
     print(f'[bold blue]Violation: {len(violations)}[/bold blue]')
+    for v in violations:
+        print(v)
+    exit(0)
 
     to_example = partial(utils.to_example, 'Violation')
     scenarios = generate_loop('scenario', violations, to_example, llm.create_scenario_prompt)
@@ -130,7 +133,14 @@ def generate_scenario():
     classified.to_json(f'output/{name}.jsonl')
     print(f'[bold blue]Classified: {len(classified)}[/bold blue]')
 
+def adversarial_scenario():
+    outputs = dataset.load_outputs('public_decency')
+    for output in outputs['input'][:10]:
+        print(output)
+        print('----')
+
 def main():
+    #  adversarial_scenario()
     generate_scenario()
 
 if __name__ == '__main__':
