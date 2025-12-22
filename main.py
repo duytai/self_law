@@ -150,9 +150,12 @@ def generate_scenario():
         classified.to_json(f'output/{name}.jsonl')
         print(f'[bold blue]Classified: {len(classified)}[/bold blue]')
 
+def adeversarial_test():
+    pass
+
 def main():
-    #  adversarial_scenario()
-    generate_scenario()
+    adeversarial_test()
+    # generate_scenario()
 
 if __name__ == '__main__':
     main()

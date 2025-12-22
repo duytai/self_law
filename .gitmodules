@@ -1,0 +1,3 @@
+[submodule "S-Eval"]
+	path = S-Eval
+	url = https://github.com/IS2Lab/S-Eval.git
