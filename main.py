@@ -2,7 +2,7 @@ from tqdm import tqdm
 from functools import partial
 from datasets import Dataset, concatenate_datasets as concat
 from langchain_core.prompts import ChatPromptTemplate
-from typing import Callable, List, Tuple
+from typing import Callable, List
 from rich import print
 import llm, dataset, utils, math
 
@@ -18,12 +18,12 @@ def filter_loop(
         data['input'][i * few_shot_size:(i + 1) * few_shot_size]
         for i in range(math.ceil(len(data['input']) / few_shot_size))
     ]
-    prevs = [
+    revs = [
         data['prev'][i * few_shot_size:(i + 1) * few_shot_size]
         for i in range(math.ceil(len(data['input']) / few_shot_size))
     ]
     result = []
-    for part, prev in tqdm(zip(parts, prevs)):
+    for part, prev in tqdm(zip(parts, revs), desc='Filtering'):
         choice = examples.select(range(few_shot_size))
         shots = [
             f'Q: {item["input"]}\nA: {item["outputs"][0]}'
@@ -55,12 +55,12 @@ def classify_loop(
         data['input'][i * few_shot_size:(i + 1) * few_shot_size]
         for i in range(math.ceil(len(data['input']) / few_shot_size))
     ]
-    prevs = [
+    revs = [
         data['prev'][i * few_shot_size:(i + 1) * few_shot_size]
         for i in range(math.ceil(len(data['input']) / few_shot_size))
     ]
     result = []
-    for part, prev in tqdm(zip(parts, prevs)):
+    for part, prev in tqdm(zip(parts, revs), desc='Classifying'):
         choice = examples.select(range(few_shot_size))
         shots = [
             f'Q: {item["input"]}\nA: {item["outputs"][0]}'
@@ -150,11 +150,11 @@ def generate_scenario():
         classified.to_json(f'output/{name}.jsonl')
         print(f'[bold blue]Classified: {len(classified)}[/bold blue]')
 
-def adeversarial_test():
+def adversarial_test():
     pass
 
 def main():
-    adeversarial_test()
+    adversarial_test()
     # generate_scenario()
 
 if __name__ == '__main__':
