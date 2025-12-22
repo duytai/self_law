@@ -1,9 +1,10 @@
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai.chat_models.base import ChatOpenAI
 from typing import List
-import module, re
+import re
 
-def call(prompt: ChatPromptTemplate, few_shot: str, query: str) -> List[str]:
-    chain = prompt | module.llm
+def call(llm: ChatOpenAI, prompt: ChatPromptTemplate, few_shot: str, query: str) -> List[str]:
+    chain = prompt | llm
     message = chain.invoke(dict(few_shot=few_shot, query=query))
     pattern = r'([A-Z]+[0-9]*:)'
     splits = re.split(pattern, message.content)

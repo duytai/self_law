@@ -4,6 +4,7 @@ from datasets import Dataset, concatenate_datasets as concat
 from langchain_core.prompts import ChatPromptTemplate
 from typing import Callable, List
 from rich import print
+from module import gpt4
 import llm, dataset, utils, math
 
 def filter_loop(
@@ -34,7 +35,7 @@ def filter_loop(
             f'Q{idx + 1}: {item}'
             for idx, item in enumerate(part)
         )
-        labels = llm.call(prompt, few_shot, query)
+        labels = llm.call(gpt4, prompt, few_shot, query)
         if len(labels) == len(part):
             for label, text, prev_ in zip(labels, part, prev):
                 if label in labels:
@@ -71,7 +72,7 @@ def classify_loop(
             f'Q{idx + 1}: {item}'
             for idx, item in enumerate(part)
         )
-        response = llm.call(prompt, few_shot, query)
+        response = llm.call(gpt4, prompt, few_shot, query)
         if len(response) == len(part):
             for p, text, prev_ in zip(response, part, prev):
                 if p.startswith(tuple(labels)):
@@ -97,7 +98,7 @@ def generate_loop(
     for item in tqdm(data, desc='Generating'):
         choice = examples.shuffle(seed).select(range(few_shot_size))
         few_shot = '\n\n'.join([x['example'] for x in choice])
-        response = llm.call(prompt, few_shot, item['query'])
+        response = llm.call(gpt4, prompt, few_shot, item['query'])
         # handle response
         prev = [item['input']]
         if 'prev' in item:
@@ -154,8 +155,8 @@ def adversarial_test():
     pass
 
 def main():
-    adversarial_test()
-    # generate_scenario()
+    # adversarial_test()
+    generate_scenario()
 
 if __name__ == '__main__':
     main()
