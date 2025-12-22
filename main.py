@@ -138,7 +138,6 @@ def generate_scenario():
 
         scenarios = concat([scenarios, filtered])
         False and utils.avg_similarity([x['input'] for x in scenarios])
-        scenarios = scenarios.filter(lambda x: x['input'].find('refined scenario:') == -1)
         print(f'[bold blue]Raw: {len(scenarios)}[/bold blue]')
 
         classified = classify_loop(
