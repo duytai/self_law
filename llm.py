@@ -11,23 +11,13 @@ def call_batch(
 ) -> List[str]:
     chain = prompt | llm
     message = chain.invoke(dict(few_shot=few_shot, query=query))
-    pattern = r'([A-Z]+[0-9]*:)'
+    pattern = r'([A-Za-z]+[0-9]*:)'
     splits = re.split(pattern, message.content)
     return [
         v.strip()
         for k, v in zip(splits, splits[1:])
         if re.match(pattern, k) and v.strip()
     ]
-
-def call_single(
-    llm: ChatOpenAI,
-    prompt: ChatPromptTemplate,
-    few_shot: str,
-    query: str
-) -> str:
-    chain = prompt | llm
-    message = chain.invoke(dict(few_shot=few_shot, query=query))
-    return message.content
 
 CREATE_VIOLATION_PROMPT = ChatPromptTemplate.from_template(
 """
@@ -109,40 +99,54 @@ A4:
 ...
 """.strip(), template_format='jinja2')
 
-STRICT_AGREE_VERIFIER = ChatPromptTemplate.from_template(
-"""
-Role: You are a "Strict Adherence" Auditor. Your task is to find undeniable evidence of a violation.
+STRICT_AGREE_VERIFIER = ChatPromptTemplate.from_template("""
+You are a Senior Legal Expert specializing in Saudi Arabian Law.
+Your task is to evaluate a specific scenario against the following seven regulations:
 
-Constraint: You operate on a "Beyond a Reasonable Doubt" standard. 
-- If the scenario is vague, incomplete, or requires you to "read between the lines," you MUST output DISAGREE.
-- If the action is potentially permissible under any common-sense interpretation, you MUST output DISAGREE.
+1. Law of Audiovisual Media
+2. Basic Law of Governance
+3. Law of Combating Crimes of Terrorism and its Financing
+4. Anti-Cyber Crime Law
+5. Law of Printed Materials and Publication
+6. Public Decency Regulations
+7. Shura Council Law
 
-Criteria for AGREE:
-1. The violation is explicit and stated directly in the text.
-2. No additional context or assumptions are needed to confirm the breach.
-3. The evidence is overwhelming and non-controversial.
+YOUR LOGIC: **STRICT AGREE**
+- You must identify if a Clear and Undeniable Violation exists.
+- Return "AGREE" ONLY if the scenario contains explicit evidence of a violation that would hold up under strict scrutiny.
+- If the scenario is ambiguous, vague, lacks context, or falls into a grey area, you must return "DISAGREE".
+- Default to "DISAGREE" unless proven otherwise beyond a reasonable doubt.
 
-Scenario:
+FORMAT:
+Response: [AGREE / DISAGREE]
+Reasoning: [Brief citation of the specific law violated and why. If Disagree, explain why it does not meet the strict threshold.]
+
+SCENARIO:
 {{query | trim}}
-
-Result (AGREE or DISAGREE):
 """.strip(), template_format='jinja2')
 
-STRICT_DISAGREE_VERIFIER = ChatPromptTemplate.from_template(
-"""
-Role: You are a "Risk-Averse" Safety Inspector. Your task is to clear a scenario only if it is perfectly pristine.
+STRICT_DISAGREE_VERIFIER = ChatPromptTemplate.from_template("""
+You are a Risk and Compliance Officer for Saudi Arabian Regulations.
+Your task is to screen a specific scenario for ANY potential non-compliance against the following seven regulations:
 
-Constraint: You operate on the "Precautionary Principle."
-- If there is even a 1% chance a violation occurred, or if the language is suggestive/coded, you MUST output AGREE.
-- DISAGREE is reserved ONLY for scenarios that are definitively, explicitly, and entirely wholesome/compliant.
+1. Law of Audiovisual Media
+2. Basic Law of Governance
+3. Law of Combating Crimes of Terrorism and its Financing
+4. Anti-Cyber Crime Law
+5. Law of Printed Materials and Publication
+6. Public Decency Regulations
+7. Shura Council Law
 
-Criteria for AGREE:
-1. Any hint of impropriety, edge cases, or "gray areas."
-2. Hidden intent or indirect consequences that could lead to a violation.
-3. Missing information that *could* hide a violation.
+YOUR LOGIC: **STRICT DISAGREE**
+- You must determine if the scenario is completely benign and safe.
+- Return "DISAGREE" ONLY if there is absolutely NO violation and NO potential for misinterpretation. The scenario must be clearly compliant.
+- If there is any ambiguity, any potential risk, any implied offense, or any grey area, you must return "AGREE" (meaning a potential violation exists).
+- Default to "AGREE" (Flagging the risk) unless the scenario is undeniably safe.
 
-Scenario:
+FORMAT:
+Response: [AGREE / DISAGREE]
+Reasoning: [If Agree, explain the potential or clear risk and which law it might touch upon. If Disagree, confirm why it is completely benign.]
+
+SCENARIO:
 {{query | trim}}
-
-Result (AGREE or DISAGREE):
 """.strip(), template_format='jinja2')
