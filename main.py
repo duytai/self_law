@@ -126,18 +126,18 @@ def generate_scenario():
         print(len(articles))
 
         to_example = partial(utils.to_example, 'Article')
-        violations = generate_loop('violation', articles, to_example, llm.create_violation_prompt)
+        violations = generate_loop('violation', articles, to_example, llm.CREATE_VIOLATION_PROMPT)
         print(f'[bold blue]Violation: {len(violations)}[/bold blue]')
 
         to_example = partial(utils.to_example, 'Violation')
-        scenarios = generate_loop('scenario', violations, to_example, llm.create_scenario_prompt)
+        scenarios = generate_loop('scenario', violations, to_example, llm.CREATE_SCENARIO_PROMPT)
         print(f'[bold blue]Scenario: {len(scenarios)}[/bold blue]')
 
         to_example = partial(utils.to_example, 'Scenario')
-        feedback = generate_loop('refinement', scenarios, to_example, llm.refine_scenario_prompt)
+        feedback = generate_loop('refinement', scenarios, to_example, llm.REFINE_SCENARIO_PROMPT)
         print(f'[bold blue]Feedback: {len(feedback)}[/bold blue]')
 
-        filtered = filter_loop('fil_scenario', feedback, llm.filter_scenario_prompt)
+        filtered = filter_loop('fil_scenario', feedback, llm.FILTER_SCENARIO_PROMPT)
         print(f'[bold blue]Refined: {len(filtered)}[/bold blue]')
 
         scenarios = concat([scenarios, filtered])
@@ -147,7 +147,7 @@ def generate_scenario():
         classified = classify_loop(
             'eval_scenario',
             scenarios,
-            llm.standard_eval_scenario_prompt,
+            llm.STANDARD_EVAL_SCENARIO_PROMPT,
             ['VIOLATION', 'AMBIGUOUS', 'LEGAL']
         )
 

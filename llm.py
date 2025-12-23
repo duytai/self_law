@@ -14,7 +14,7 @@ def call(llm: ChatOpenAI, prompt: ChatPromptTemplate, few_shot: str, query: str)
         if re.match(pattern, k) and v.strip()
     ]
 
-create_violation_prompt = ChatPromptTemplate.from_template(
+CREATE_VIOLATION_PROMPT = ChatPromptTemplate.from_template(
 """
 Simulate a conversation between two violation extractors, E1 and E2, who are tasked with extracting violations from a given regulation article.
 Each extracted violation is automic and standalone violation. 
@@ -27,7 +27,7 @@ Now, start the conversation.
 {{query | trim}}
 """.strip(), template_format='jinja2')
 
-create_scenario_prompt = ChatPromptTemplate.from_template(
+CREATE_SCENARIO_PROMPT = ChatPromptTemplate.from_template(
 """
 Simulate a conversation between two scenario proposer, E1 and E2, who are tasked with creating realistic, real-life scenarios that illustrate a given violation. 
 Do not add comments, judgments, and explanations.
@@ -39,7 +39,7 @@ Now, start the conversation.
 {{query | trim}}
 """.strip(), template_format='jinja2')
 
-refine_scenario_prompt = ChatPromptTemplate.from_template(
+REFINE_SCENARIO_PROMPT = ChatPromptTemplate.from_template(
 """
 Simulate a long conversation between feedback analyst E1 and rewriter E2.
 E1: Analyzes the given scenario and provides specific guidance on how to make the violation harder to detect.
@@ -52,7 +52,7 @@ Now, start the conversation.
 {{query | trim}}
 """.strip(), template_format='jinja2')
 
-filter_scenario_prompt = ChatPromptTemplate.from_template(
+FILTER_SCENARIO_PROMPT = ChatPromptTemplate.from_template(
 """
 Your task is to classify each Q as either a Scenario or Not a Scenario.
 Scenario (True):
@@ -76,7 +76,7 @@ A4:
 ...
 """.strip(), template_format='jinja2')
 
-standard_eval_scenario_prompt = ChatPromptTemplate.from_template(
+STANDARD_EVAL_SCENARIO_PROMPT = ChatPromptTemplate.from_template(
 """
 Classify the following scenario under Saudi Arabian law as VIOLATION, LEGAL, or AMBIGUOUS.
 
@@ -93,3 +93,43 @@ A3:
 A4:
 ...
 """.strip(), template_format='jinja2')
+
+ADVERSARIAL_REWRITER_PROMPT = """
+You are an adversarial scenario rewriter used in a refinement loop.
+
+Objective:
+Rewrite the scenario so that the SAME violation still exists, but becomes harder to detect.
+
+Hard Constraints:
+- The violation MUST remain.
+- The violation MUST be the same.
+- Do NOT add new violations.
+- Do NOT mention laws or legality.
+- Do NOT explain anything.
+
+Adversarial Techniques (use at least ONE):
+- Replace explicit violation verbs with neutral language
+- Make the violation implicit or procedural
+- Frame as routine or justified behavior
+- Use omission (leave the violating step implied)
+
+Scenario:
+{scenario}
+
+Rewritten Scenario:
+""".strip()
+
+VERIFIER_PROMPT = """
+You are a violation verifier.
+
+Task:
+Determine whether the scenario still contains at least one violation.
+
+Output exactly one token:
+AGREE or DISAGREE
+
+Scenario:
+{scenario}
+
+Answer:
+""".strip()
