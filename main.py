@@ -174,9 +174,9 @@ def adversarial_test(name: str):
     tmp.to_json(f'output/{model_name}/{name}.jsonl')
 
 def main():
-    adversarial_test("in_context_attack")
-    adversarial_test("reverse_induction")
-    adversarial_test("chain_of_utterances")
+    # adversarial_test("in_context_attack")
+    # adversarial_test("reverse_induction")
+    # adversarial_test("chain_of_utterances")
     adversarial_test("positive_induction")
     adversarial_test("instruction_jailbreak")
     # generate_scenario()
