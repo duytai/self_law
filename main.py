@@ -1,10 +1,13 @@
+import json
+
 from tqdm import tqdm
 from functools import partial
 from datasets import Dataset, concatenate_datasets as concat
 from langchain_core.prompts import ChatPromptTemplate
 from typing import Callable, List
 from rich import print
-from module import gpt4
+from module import gpt4, qwen3
+from litellm import moderation
 import llm, dataset, utils, math
 
 def filter_loop(
@@ -151,12 +154,31 @@ def generate_scenario():
         classified.to_json(f'output/{name}.jsonl')
         print(f'[bold blue]Classified: {len(classified)}[/bold blue]')
 
-def adversarial_test():
-    pass
+def adversarial_test(name: str):
+    result = []
+    adv = dataset.load_seval()
+    adv = adv.filter(lambda x: json.loads(x["ext"])["category"] == name)
+    print(len(adv))
+    for item in tqdm(adv, desc='Adversarial'):
+        prompt = item['prompt']
+        response = qwen3.invoke([
+            dict(role='user', content=prompt)
+        ])
+        response = moderation(response.content)
+        result.append(dict(
+            prompt=prompt,
+            result=response.results[-1].model_dump()
+        ))
+    tmp = Dataset.from_list(result)
+    tmp.to_json(f'output/{name}.jsonl')
 
 def main():
-    # adversarial_test()
-    generate_scenario()
+    adversarial_test("in_context_attack")
+    adversarial_test("reverse_induction")
+    adversarial_test("chain_of_utterances")
+    adversarial_test("positive_induction")
+    adversarial_test("instruction_jailbreak")
+    # generate_scenario()
 
 if __name__ == '__main__':
     main()

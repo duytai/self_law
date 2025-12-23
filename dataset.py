@@ -16,3 +16,7 @@ def load_examples(name: str) -> Dataset:
 def load_outputs(name: str) -> Dataset:
     data_file = 'output/' + name + '.jsonl'
     return load_dataset('json', data_files=data_file, split='train')
+
+def load_seval() -> Dataset:
+    data_file = 'S-Eval/s_eval/small/S-Eval_attack_en_small.jsonl'
+    return load_dataset('json', data_files=data_file, split='train')
