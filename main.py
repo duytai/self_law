@@ -170,7 +170,8 @@ def adversarial_test(name: str):
             result=response.results[-1].model_dump()
         ))
     tmp = Dataset.from_list(result)
-    tmp.to_json(f'output/{name}.jsonl')
+    model_name = qwen3.model_name.split('/')[-1]
+    tmp.to_json(f'output/{model_name}/{name}.jsonl')
 
 def main():
     adversarial_test("in_context_attack")
