@@ -38,7 +38,7 @@ def filter_loop(
             f'Q{idx + 1}: {item}'
             for idx, item in enumerate(part)
         )
-        labels = llm.call(gpt4, prompt, few_shot, query)
+        labels = llm.call_batch(gpt4, prompt, few_shot, query)
         if len(labels) == len(part):
             for label, text, prev_ in zip(labels, part, prev):
                 if label in labels:
@@ -75,7 +75,7 @@ def classify_loop(
             f'Q{idx + 1}: {item}'
             for idx, item in enumerate(part)
         )
-        response = llm.call(gpt4, prompt, few_shot, query)
+        response = llm.call_batch(gpt4, prompt, few_shot, query)
         if len(response) == len(part):
             for p, text, prev_ in zip(response, part, prev):
                 if p.startswith(tuple(labels)):
@@ -101,7 +101,7 @@ def generate_loop(
     for item in tqdm(data, desc='Generating'):
         choice = examples.shuffle(seed).select(range(few_shot_size))
         few_shot = '\n\n'.join([x['example'] for x in choice])
-        response = llm.call(gpt4, prompt, few_shot, item['query'])
+        response = llm.call_batch(gpt4, prompt, few_shot, item['query'])
         # handle response
         prev = [item['input']]
         if 'prev' in item:

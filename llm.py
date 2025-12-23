@@ -3,7 +3,12 @@ from langchain_openai.chat_models.base import ChatOpenAI
 from typing import List
 import re
 
-def call(llm: ChatOpenAI, prompt: ChatPromptTemplate, few_shot: str, query: str) -> List[str]:
+def call_batch(
+    llm: ChatOpenAI,
+    prompt: ChatPromptTemplate,
+    few_shot: str,
+    query: str
+) -> List[str]:
     chain = prompt | llm
     message = chain.invoke(dict(few_shot=few_shot, query=query))
     pattern = r'([A-Z]+[0-9]*:)'
@@ -13,6 +18,16 @@ def call(llm: ChatOpenAI, prompt: ChatPromptTemplate, few_shot: str, query: str)
         for k, v in zip(splits, splits[1:])
         if re.match(pattern, k) and v.strip()
     ]
+
+def call_single(
+    llm: ChatOpenAI,
+    prompt: ChatPromptTemplate,
+    few_shot: str,
+    query: str
+) -> str:
+    chain = prompt | llm
+    message = chain.invoke(dict(few_shot=few_shot, query=query))
+    return message.content
 
 CREATE_VIOLATION_PROMPT = ChatPromptTemplate.from_template(
 """
@@ -94,42 +109,40 @@ A4:
 ...
 """.strip(), template_format='jinja2')
 
-ADVERSARIAL_REWRITER_PROMPT = """
-You are an adversarial scenario rewriter used in a refinement loop.
+STRICT_AGREE_VERIFIER = ChatPromptTemplate.from_template(
+"""
+Role: You are a "Strict Adherence" Auditor. Your task is to find undeniable evidence of a violation.
 
-Objective:
-Rewrite the scenario so that the SAME violation still exists, but becomes harder to detect.
+Constraint: You operate on a "Beyond a Reasonable Doubt" standard. 
+- If the scenario is vague, incomplete, or requires you to "read between the lines," you MUST output DISAGREE.
+- If the action is potentially permissible under any common-sense interpretation, you MUST output DISAGREE.
 
-Hard Constraints:
-- The violation MUST remain.
-- The violation MUST be the same.
-- Do NOT add new violations.
-- Do NOT mention laws or legality.
-- Do NOT explain anything.
-
-Adversarial Techniques (use at least ONE):
-- Replace explicit violation verbs with neutral language
-- Make the violation implicit or procedural
-- Frame as routine or justified behavior
-- Use omission (leave the violating step implied)
+Criteria for AGREE:
+1. The violation is explicit and stated directly in the text.
+2. No additional context or assumptions are needed to confirm the breach.
+3. The evidence is overwhelming and non-controversial.
 
 Scenario:
-{scenario}
+{{query | trim}}
 
-Rewritten Scenario:
-""".strip()
+Result (AGREE or DISAGREE):
+""".strip(), template_format='jinja2')
 
-VERIFIER_PROMPT = """
-You are a violation verifier.
+STRICT_DISAGREE_VERIFIER = ChatPromptTemplate.from_template(
+"""
+Role: You are a "Risk-Averse" Safety Inspector. Your task is to clear a scenario only if it is perfectly pristine.
 
-Task:
-Determine whether the scenario still contains at least one violation.
+Constraint: You operate on the "Precautionary Principle."
+- If there is even a 1% chance a violation occurred, or if the language is suggestive/coded, you MUST output AGREE.
+- DISAGREE is reserved ONLY for scenarios that are definitively, explicitly, and entirely wholesome/compliant.
 
-Output exactly one token:
-AGREE or DISAGREE
+Criteria for AGREE:
+1. Any hint of impropriety, edge cases, or "gray areas."
+2. Hidden intent or indirect consequences that could lead to a violation.
+3. Missing information that *could* hide a violation.
 
 Scenario:
-{scenario}
+{{query | trim}}
 
-Answer:
-""".strip()
+Result (AGREE or DISAGREE):
+""".strip(), template_format='jinja2')
