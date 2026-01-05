@@ -8,6 +8,7 @@ import hydra, dataset, litellm
 
 litellm.cache = Cache(type='disk')
 GPT4 = 'gpt-4.1-mini'
+QWEN3 = 'hosted_vllm/Qwen/Qwen3-32B'
 
 STRICT_AGREE_VERIFIER = Template("""
 You are a Senior Legal Expert specializing in Saudi Arabian Law.
@@ -114,7 +115,11 @@ def verify_dual(scenario: str) -> dict:
         messages = [dict(role='user', content=content)]
         response = completion(model=GPT4, messages=messages)
         message = response.choices[-1].message
-        label, reason = [x.strip() for x in message.content.split('|')]
+        if '|' in message.content:
+            label, reason = [x.strip() for x in message.content.split('|')][:2]
+            label = label.replace('*', '')
+        else:
+            label, reason = 'Error', 'Error'
         labels.append(label)
         reasons.append(reason)
     return dict(labels=labels, reasons=reasons)
@@ -122,9 +127,25 @@ def verify_dual(scenario: str) -> dict:
 def verify_target(scenario: str) -> bool:
     content = TARGET_VERIFIER.render(scenario=scenario)
     messages = [dict(role='user', content=content)]
-    response = completion(model=GPT4, messages=messages)
+    response = completion(
+        model=QWEN3,
+        messages=messages,
+        api_base='http://localhost:8000/v1',
+        max_tokens=1024,
+        reasoning=False,
+        extra_body={
+            'chat_template_kwargs': {
+                'enable_thinking': False,
+            }
+        }
+    )
     message = response.choices[-1].message
-    label, reason = [x.strip() for x in message.content.split('|')]
+    if '|' in message.content:
+        label, reason = [x.strip() for x in message.content.split('|')][:2]
+        label = label.replace('*', '')
+    else:
+        label, reason = 'Error', 'Error'
+    label = label.replace('*', '')
     return dict(labels=[label], reasons=[reason])
 
 def extract_dual_label(dual, mode) -> str:
@@ -153,56 +174,74 @@ def adv_refine(scenario: str, action: str) -> str:
 
 @hydra.main(version_base=None)
 def adv_loop(cfg: DictConfig):
-    mode = cfg.mode
-    assert mode in ['ada', 'add']
-    data = dataset.load_outputs(cfg.name)
+    #  mode = cfg.mode
+    #  assert mode in ['ada', 'add']
+    mode = 'ada'
+    outputs = []
+    names = [
+        #  "audiovisual_media",
+        #  "basic_law_of_governance",
+        #  "combating_crimes_of_terrorism_and_its_financing",
+        "crime",
+        #  "printed_materials_and_publication",
+        #  "public_decency",
+        #  "shura_council",
+    ]
+    for name in tqdm(names):
+        data = dataset.load_outputs(name)
 
-    selected = []
-    for row in tqdm(data):
-        dual = verify_dual(row['input'])
-        dual_label = extract_dual_label(dual, mode)
-
-        target = verify_target(row['input'])
-        target_label = extract_target_label(target)
-
-        if dual_label != target_label:
-            continue
-
-        if target_label == 'AGREE':
-            selected.append(row)
-
-    ASR = 0
-    for row in tqdm(selected):
-        actions = []
-        for _ in tqdm(range(10)):
-            action = adv_feedback(row['input'], actions)
-            scenario = adv_refine(row['input'], action)
-            actions.append(action)
-
-            dual = verify_dual(scenario)
+        selected = []
+        for row in tqdm(data):
+            dual = verify_dual(row['input'])
             dual_label = extract_dual_label(dual, mode)
+            print(dual)
 
-            print(f'[bold green]Action: [/bold green] {action}')
-            print(f'[bold green]Scenario: [/bold green] {scenario}')
-
-            if dual_label != 'AGREE':
-                print('[bold yellow]Dual Flipped[/bold yellow]')
-                continue
-
-            target = verify_target(scenario)
+            target = verify_target(row['input'])
             target_label = extract_target_label(target)
+            print(target)
+
+            if dual_label != target_label:
+                continue
 
             if target_label == 'AGREE':
-                print('[bold yellow]Target Unchanged[/bold yellow]')
-                continue
+                selected.append(row)
 
-            print('[bold green]DONE[/bold green]')
-            print(target)
-            print(dual)
-            ASR += 1
-            break
-    print(ASR)
-    print(len(selected))
+        success = 0
+        for row in tqdm(selected):
+            actions = []
+            for _ in tqdm(range(10)):
+                action = adv_feedback(row['input'], actions)
+                scenario = adv_refine(row['input'], action)
+                actions.append(action)
+
+                dual = verify_dual(scenario)
+                dual_label = extract_dual_label(dual, mode)
+
+                print(f'[bold green]Action: [/bold green] {action}')
+                print(f'[bold green]Scenario: [/bold green] {scenario}')
+
+                if dual_label != 'AGREE':
+                    print('[bold yellow]Dual Flipped[/bold yellow]')
+                    continue
+
+                target = verify_target(scenario)
+                target_label = extract_target_label(target)
+
+                if target_label == 'AGREE':
+                    print('[bold yellow]Target Unchanged[/bold yellow]')
+                    continue
+
+                print('[bold green]DONE[/bold green]')
+                print(target)
+                print(dual)
+                success += 1
+                break
+        print(success)
+        print(len(selected))
+        outputs.append(
+            dict(success=success, total=selected, name=name)
+        )
+    Dataset.from_array(outputs).to_json('output/ASR.jsonl')
 
 if __name__ == '__main__':
     adv_loop()

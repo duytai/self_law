@@ -18,14 +18,28 @@ gpt4 = ChatOpenAI(
 )
 
 qwen3 = ChatOpenAI(
-    # model='qwen/qwen3-32b',
-    # model='Qwen/Qwen3-8B',
     model='deepseek-ai/DeepSeek-R1-0528-Qwen3-8B',
+    #  model='Qwen/Qwen3-8B',
     temperature=0.0,
     max_tokens=1024,
     top_p=1.0,
     base_url='http://localhost:8000/v1',
-    # base_url='https://openrouter.ai/api/v1',
+    api_key=os.environ.get('OPENROUTER_API_KEY', ''),
+    extra_body={
+        'chat_template_kwargs': {
+            'enable_thinking': False,
+        }
+    }
+)
+
+guard = ChatOpenAI(
+    model='Qwen/Qwen3Guard-Gen-4B',
+    #  model='meta-llama/Llama-Guard-3-8B',
+    #  model='Alibaba-AAIG/Octopus-SEval-14B',
+    temperature=0.0,
+    max_tokens=20,
+    top_p=1.0,
+    base_url='http://localhost:8001/v1',
     api_key=os.environ.get('OPENROUTER_API_KEY', ''),
     extra_body={
         'chat_template_kwargs': {
