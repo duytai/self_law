@@ -1,5 +1,6 @@
 __pycache__/
 outputs/
+reg_db/
 .idea/
 .litellm_cache/
 Makefile

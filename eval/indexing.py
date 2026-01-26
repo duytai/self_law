@@ -1,12 +1,13 @@
 from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
 from glob import glob
+from tqdm import tqdm
 import yaml
 
 files = glob('data/regulation/*.yaml')
 texts, metadatas, ids = [], [], []
 
-for file in files[:1]:
+for file in tqdm(files):
     content = yaml.safe_load(open(file, 'r'))
     articles = content['articles']
     regulation = content['regulation']
@@ -17,20 +18,12 @@ for file in files[:1]:
         {**item, 'regulation': regulation, 'country': country}
         for item in articles
     ]
-    ids.append(len(ids) + 1)
-    break
+ids = list(range(len(texts)))
 
-for text in texts:
-    print(repr(text))
-
-texts = texts[:1]
-metadatas = metadatas[:1]
-ids = ids[:1]
-
-#  Chroma.from_texts(
-    #  texts=texts,
-    #  embedding=OpenAIEmbeddings(model='text-embedding-3-large'),
-    #  metadatas=metadatas,
-    #  ids=[str(i) for i in ids],
-    #  persist_directory='./my_db'
-#  )
+Chroma.from_texts(
+    texts=texts,
+    embedding=OpenAIEmbeddings(model='text-embedding-3-large'),
+    metadatas=metadatas,
+    ids=[str(i) for i in ids],
+    persist_directory='./reg_db'
+)
