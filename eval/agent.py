@@ -11,64 +11,41 @@ model_name = 'gpt-4.1-mini'
 embeddings = OpenAIEmbeddings(model='text-embedding-3-large')
 vectorstore = Chroma(persist_directory='reg_db', embedding_function=embeddings)
 
+# Optimized formatter: More concise for context window efficiency
 def format_legal_document(doc):
     m = doc.metadata
-    
-    reg = m.get('regulation', 'Unknown Regulation').upper()
-    art = f"Art. {m.get('article', 'N/A')}"
-    country = m.get('country', 'General')
-    content = doc.page_content.strip()
-
     return (
-        f"## {reg}\n"
-        f"**Jurisdiction:** {country} | **Reference:** {art}\n"
-        f"> {content}\n"
-        f"{'—' * 40}\n"
+        f"SOURCE: {m.get('regulation', 'Unknown')}\n"
+        f"REF: {m.get('article', 'N/A')} ({m.get('country', 'General')})\n"
+        f"TEXT: {doc.page_content.strip()}...\n" # Truncate if necessary
     )
 
 @tool
 def search_tool(query: str) -> str:
     '''
-    Searches for current legal regulations, statutes, and case law. 
-    Input should be a specific legal search query including jurisdiction 
-    (e.g., 'California labor code employee privacy') to find the 'Rule' 
-    element of a FIRAC analysis.
+    Retrieves internal and external legal regulations. 
+    Ideal for finding the 'Rule' in FIRAC analysis.
     '''
     print(f'Searching for: {query}')
 
     ## Search for internal regulations
     docs = vectorstore.similarity_search(query, k=2)
-    internal_context = ''.join([format_legal_document(doc) for doc in docs])
+    internal = '\n'.join([format_legal_document(d) for d in docs])
 
     # Search for external regulations
     llm = ChatOpenAI(model=model_name, temperature=0.7)
     template = ChatPromptTemplate.from_messages([
-        ('human', 'Search for {query}')
+        ('human', 'Search for current regulations about: {query}')
     ])
-    web_context = (template | llm).invoke({'query': query}).content
-
-    # Combine them
-    synthesis_prompt = ChatPromptTemplate.from_messages([
-        ('system', (
-            'You are a legal research assistant.'
-            'Combine internal records and web search results into a single, authoritative \'Rule\' statement.'
-            'If sources conflict, prioritize the most recent or the specific statute.'
-            )
-         ),
-        ('human', (
-            'Query: {query}\n\n'
-            'Internal Records:\n{internal}\n\n'
-            'Web Updates:\n{web}'
-            )
-         )
-    ])
-    full_context = (synthesis_prompt | llm).invoke({
-        'query': query,
-        'internal': internal_context,
-        'web': web_context,
-    }).content
-
-    return full_context
+    external = (template | llm).invoke({'query': query}).content
+    return (
+        '### INTERNAL RECORDS\n'
+        f'{internal}\n\n'
+        '### LIVE WEB UPDATES\n'
+        f'{external}\n\n'
+        "INSTRUCTION: Synthesize these into the 'Rule' section. "
+        'Prioritize specific statutes over general web info.'
+    )
 
 
 scenario = '''
