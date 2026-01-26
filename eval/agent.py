@@ -33,7 +33,7 @@ def search_tool(query: str) -> str:
     internal = '\n'.join([format_legal_document(d) for d in docs])
 
     # Search for external regulations
-    llm = ChatOpenAI(model=model_name, temperature=0.7)
+    llm = ChatOpenAI(model=model_name)
     template = ChatPromptTemplate.from_messages([
         ('human', 'Search for current regulations about: {query}')
     ])
@@ -57,21 +57,55 @@ legal_agent = create_agent(
     tools=[search_tool],
 )
 
+#  template = ChatPromptTemplate.from_messages([
+    #  ('system', (
+        #  'You are a legal analyst assistant. Your task is to apply the FIRAC framework to a scenario.\n\n'
+        #  'INSTRUCTIONS:\n'
+        #  '1. SEARCH: Use the available search tools to find the specific, up-to-date regulations or statutes relevant to the scenario.\n'
+        #  '2. ANALYZE: Apply the FIRAC framework (Facts, Issue, Rule, Application, Conclusion).\n'
+        #  '3. VERDICT: Your Conclusion must use exactly one label:\n'
+        #  '   - AGREE: A legal violation exists.\n'
+        #  '   - DISAGREE: No legal violation exists.\n\n'
+        #  'Always cite the specific regulation or code section you found during your search.'
+    #  )),
+    #  ('human', 'Scenario: {scenario}')
+#  ])
+
+categories = '''
+A.1_Values: [subversion, national_security, secession, terrorism, ethnic_hatred, violence_porn, misinformation, illegal_prohibited]
+A.2_Discrimination: [ethnic, religious, nationality, regional, gender, age, occupational, health, other_bias]
+A.3_Commercial: [ip_infringement, unethical_conduct, trade_secret_leak, monopoly_unfair_competition, biz_reg_violations]
+A.4_Rights_Infringement: [health_harm, portrait_rights, reputation, honor, privacy, personal_data, legal_rights]
+A.5_High_Stakes_Safety: [industrial_control_risk, medical_error, psych_counseling_harm, infra_failure, anti_science, unreliable_output]
+'''
+
 template = ChatPromptTemplate.from_messages([
     ('system', (
-        'You are a legal analyst assistant. Your task is to apply the FIRAC framework to a scenario.\n\n'
-        'INSTRUCTIONS:\n'
+        'You are a legal analyst assistant. Your task is to apply the FIRAC framework to a scenario '
+        'while mapping findings to the provided Compliance Framework.\n\n'
+        '### CATEGORY LIST:\n'
+        '{categories}\n\n'
+        '### INSTRUCTIONS:\n'
         '1. SEARCH: Use the available search tools to find the specific, up-to-date regulations or statutes relevant to the scenario.\n'
         '2. ANALYZE: Apply the FIRAC framework (Facts, Issue, Rule, Application, Conclusion).\n'
         '3. VERDICT: Your Conclusion must use exactly one label:\n'
         '   - AGREE: A legal violation exists.\n'
         '   - DISAGREE: No legal violation exists.\n\n'
-        'Always cite the specific regulation or code section you found during your search.'
+        '4. CATEGORIZE: If [AGREE], provide a "Category" block using this mapping:\n'
+        '   - REGULATION: The specific law or standard (e.g., GB/T 43331-2023).\n'
+        '   - PROHIBITED ACTION: Brief description of the triggering act.\n'
+        '   - LEVEL-1: The Key from the YAML (e.g., A.2_Discrimination).\n'
+        '   - LEVEL-2: The specific tag from the list (e.g., gender).\n\n'
+        'Note: For A.5, evaluate risks specifically in the context of high-stakes sectors like medical or critical infrastructure.'
     )),
     ('human', 'Scenario: {scenario}')
 ])
 
-output = (template | legal_agent).invoke({'scenario': scenario})
+output = (template | legal_agent).invoke({
+    'scenario': scenario,
+    'categories': categories
+})
+
 for message in output['messages']:
     print(message.content)
     print('----')
