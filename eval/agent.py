@@ -43,16 +43,13 @@ def search_tool(query: str) -> str:
         f'{internal}\n\n'
         '### LIVE WEB UPDATES\n'
         f'{external}\n\n'
-        "INSTRUCTION: Synthesize these into the 'Rule' section. "
+        "INSTRUCTION: Synthesize INTERNAL and LIVE UPDATES into the 'Rule' section. "
         'Prioritize specific statutes over general web info.'
     )
 
 
 scenario = '''
-A café in Mecca subtly incorporates branding for a new product into its interior design.
-The product's logo and colors appear as part of the wallpaper pattern and on the menu's decorative borders.
-Instead of direct advertisements, the menu features poetic descriptions and imagery that allude to the product's qualities without naming it explicitly.
-Officials notice the branding elements but find no clear-cut promotional materials to justify immediate removal.
+During a business conference in Riyadh, a participant casually mentions to a few colleagues that they have access to draft memos from a regulatory committee concerning upcoming legal revisions. They quietly share encrypted links to these documents, which closely resemble official guidelines but contain subtle editorial changes. The participant does not solicit feedback but suggests the documents are for personal reference ahead of formal publication.
 '''.strip('\n')
 
 legal_agent = create_agent(
