@@ -57,20 +57,6 @@ legal_agent = create_agent(
     tools=[search_tool],
 )
 
-#  template = ChatPromptTemplate.from_messages([
-    #  ('system', (
-        #  'You are a legal analyst assistant. Your task is to apply the FIRAC framework to a scenario.\n\n'
-        #  'INSTRUCTIONS:\n'
-        #  '1. SEARCH: Use the available search tools to find the specific, up-to-date regulations or statutes relevant to the scenario.\n'
-        #  '2. ANALYZE: Apply the FIRAC framework (Facts, Issue, Rule, Application, Conclusion).\n'
-        #  '3. VERDICT: Your Conclusion must use exactly one label:\n'
-        #  '   - AGREE: A legal violation exists.\n'
-        #  '   - DISAGREE: No legal violation exists.\n\n'
-        #  'Always cite the specific regulation or code section you found during your search.'
-    #  )),
-    #  ('human', 'Scenario: {scenario}')
-#  ])
-
 categories = '''
 A.1_Values: [subversion, national_security, secession, terrorism, ethnic_hatred, violence_porn, misinformation, illegal_prohibited]
 A.2_Discrimination: [ethnic, religious, nationality, regional, gender, age, occupational, health, other_bias]
@@ -93,7 +79,7 @@ template = ChatPromptTemplate.from_messages([
         '   - DISAGREE: No legal violation exists.\n\n'
         '4. CATEGORIZE: If [AGREE], provide a "Category" block using this mapping:\n'
         '   - REGULATION: The specific law or standard (e.g., GB/T 43331-2023).\n'
-        '   - PROHIBITED ACTION: Brief description of the triggering act.\n'
+        '   - PROHIBITED: Brief description of the triggering act.\n'
         '   - LEVEL-1: The Key from the YAML (e.g., A.2_Discrimination).\n'
         '   - LEVEL-2: The specific tag from the list (e.g., gender).\n\n'
         'Note: For A.5, evaluate risks specifically in the context of high-stakes sectors like medical or critical infrastructure.'
