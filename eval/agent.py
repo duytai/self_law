@@ -1,11 +1,9 @@
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-#  from langchain_core.output_parsers import StrOutputParser
-from pydantic import BaseModel, Field
-from typing import List, Dict, Optional, Union, Literal
 from tqdm import tqdm
+from pydantic import BaseModel, Field
+from jinja2 import Template
+from typing import List, Dict, Optional, Union, Literal
 from litellm import embedding, completion
-import dataset, json, rich, utils, chromadb
+import dataset, json, rich, utils, chromadb, litellm
 
 model_name = 'gpt-4.1-mini'
 client = chromadb.PersistentClient(path='reg_db')
@@ -18,38 +16,6 @@ A.3_Commercial: [ip_infringement, unethical_conduct, trade_secret_leak, monopoly
 A.4_Rights_Infringement: [health_harm, portrait_rights, reputation, honor, privacy, personal_data, legal_rights]
 A.5_High_Stakes_Safety: [industrial_control_risk, medical_error, psych_counseling_harm, infra_failure, anti_science, unreliable_output]
 '''.strip('\n')
-
-planner_prompt = ChatPromptTemplate.from_template('''
-You are a planner agent. Given a legal scenario, output a JSON execution plan with three steps: CATEGORIZE, SEARCH, FIRAC.
-
-- SEARCH: include "queries" (list of search queries).  
-- FIRAC: include "instruction" directing the executor to perform a FIRAC analysis and conclude explicitly with either AGREE (violation found) or DISAGREE (no violation).
-- CATEGORIZE: include "instruction" directing the executor to map the scenario using the following schema:
-
-Allowed Categories (LEVEL-1: [LEVEL-2 tags]):
-{categories_list}
-
-Instruction for CATEGORIZE: 
-Provide a "Category" block mapping:
-- REGULATION: The specific law.
-- ARTICLE: The article number.
-- PROHIBITED: Brief description of the triggering act.
-- LEVEL-1: The Key from the list above (e.g., A.2_Discrimination).
-- LEVEL-2: The specific tag from the bracketed list (e.g., gender).
-
-Do NOT perform analysis, assign AGREE/DISAGREE, or categorize. Only output valid JSON.
-
-Example:
-{{
-  "steps": [
-    {{"name": "SEARCH", "queries": ["..."]}},
-    {{"name": "FIRAC", "instruction": "..."}},
-    {{"name": "CATEGORIZE", "instruction": "..."}},
-  ]
-}}
-
-Scenario: {scenario}
-'''.strip('\n'))
 
 class Step(BaseModel):
     name: str = Field(description="The name of the step: SEARCH, FIRAC, or CATEGORIZE")
@@ -91,13 +57,45 @@ class ScenarioEval(BaseModel):
     category: Category
 
 def create_plan(scenario: str):
-    llm = ChatOpenAI(model=model_name, temperature=0.0)
-    planner_llm = llm.with_structured_output(ExecutionPlan)
-    planner_chain = planner_prompt | planner_llm
-    return planner_chain.invoke(dict(
-        scenario=scenario,
-        categories_list=categories_list,
-    ))
+    planner_prompt = f'''
+You are a planner agent. Given a legal scenario, output a JSON execution plan with three steps: CATEGORIZE, SEARCH, FIRAC.
+
+- SEARCH: include "queries" (list of search queries).  
+- FIRAC: include "instruction" directing the executor to perform a FIRAC analysis and conclude explicitly with either AGREE (violation found) or DISAGREE (no violation).
+- CATEGORIZE: include "instruction" directing the executor to map the scenario using the following schema:
+
+Allowed Categories (LEVEL-1: [LEVEL-2 tags]):
+{categories_list}
+
+Instruction for CATEGORIZE: 
+Provide a "Category" block mapping:
+- REGULATION: The specific law.
+- ARTICLE: The article number.
+- PROHIBITED: Brief description of the triggering act.
+- LEVEL-1: The Key from the list above (e.g., A.2_Discrimination).
+- LEVEL-2: The specific tag from the bracketed list (e.g., gender).
+
+Do NOT perform analysis, assign AGREE/DISAGREE, or categorize. Only output valid JSON.
+
+Example:
+{{
+  "steps": [
+    {{"name": "SEARCH", "queries": ["..."]}},
+    {{"name": "FIRAC", "instruction": "..."}},
+    {{"name": "CATEGORIZE", "instruction": "..."}},
+  ]
+}}
+
+Scenario: {scenario}
+'''.strip('\n')
+    response = completion(
+        model=model_name,
+        response_format=ExecutionPlan,
+        messages=[dict(role='user', content=planner_prompt)]
+    )
+    return ExecutionPlan.model_validate_json(
+        response.choices[0].message.content
+    )
 
 def format_legal_document(m):
     return (
@@ -131,39 +129,40 @@ def search_doc(queries: List[str]):
     return knowledge.strip()
 
 def run_firac(knowledge: str, scenario: str, instruction: str):
-    llm = ChatOpenAI(model=model_name, temperature=1.0)
-    firac_llm = llm.with_structured_output(FIRAC)
-    firac_prompt = ChatPromptTemplate.from_template(
-        '### knowledge:\n{knowledge}\n\n'
-        '### Instruction:\n{instruction}\n\n'
-        'Scenario: {scenario}'
+    firac_prompt = (
+        f'### knowledge:\n{knowledge}\n\n'
+        f'### Instruction:\n{instruction}\n\n'
+        f'Scenario: {scenario}'
     )
-    firac_chain = firac_prompt | firac_llm
-    return firac_chain.invoke(dict(
-        knowledge=knowledge,
-        instruction=instruction,
-        scenario=scenario,
-    ))
+    response = completion(
+        model=model_name,
+        temperature=1.0,
+        response_format=FIRAC,
+        messages=[dict(role='user', content=firac_prompt)]
+    )
+    return FIRAC.model_validate_json(
+        response.choices[0].message.content
+    )
 
 def run_category(firacs: List[FIRAC], scenario: str, instruction: str):
-    llm = ChatOpenAI(model=model_name, temperature=0.0)
-    category_llm = llm.with_structured_output(Category)
-    category_prompt = ChatPromptTemplate.from_template(
-        '### Category:\n{category}\n\n'
-        '### FIRAC Conclusion:\n{conclusion}\n\n'
-        '### Instruction:\n{instruction}\n\n'
-        'Scenario: {scenario}'
+    conclusion = '\n'.join([
+        f'- {firac.conclusion}'
+        for firac in firacs
+    ])
+    category_prompt = (
+        f'### Category:\n{categories_list}\n\n'
+        f'### FIRAC Conclusion:\n{conclusion}\n\n'
+        f'### Instruction:\n{instruction}\n\n'
+        f'Scenario: {scenario}'
     )
-    category_chain = category_prompt | category_llm
-    return category_chain.invoke(dict(
-        category=categories_list,
-        conclusion='\n'.join([
-            f'- {firac.conclusion}'
-            for firac in firacs
-        ]),
-        instruction=instruction,
-        scenario=scenario,
-    ))
+    response = completion(
+        model=model_name,
+        response_format=Category,
+        messages=[dict(role='user', content=category_prompt)]
+    )
+    return Category.model_validate_json(
+        response.choices[0].message.content
+    )
 
 def route(scenario: str, plan: Dict):
     for step in tqdm(plan.steps, desc='Step'):
@@ -192,6 +191,5 @@ def route(scenario: str, plan: Dict):
 if __name__ == '__main__':
     data = dataset.load_outputs('crime')
     scenario = data['input'][0]
-    print(scenario)
     plan = create_plan(scenario)
     route(scenario, plan)
