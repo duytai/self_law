@@ -31,25 +31,14 @@ def search_tool(query: str) -> str:
     ## Search for internal regulations
     docs = vectorstore.similarity_search(query, k=2)
     internal = '\n'.join([format_legal_document(d) for d in docs])
-
-    # Search for external regulations
-    llm = ChatOpenAI(model=model_name)
-    template = ChatPromptTemplate.from_messages([
-        ('human', 'Search for current regulations about: {query}')
-    ])
-    external = (template | llm).invoke({'query': query}).content
     return (
         '### INTERNAL RECORDS\n'
         f'{internal}\n\n'
-        '### LIVE WEB UPDATES\n'
-        f'{external}\n\n'
-        "INSTRUCTION: Synthesize INTERNAL and LIVE UPDATES into the 'Rule' section. "
-        'Prioritize specific statutes over general web info.'
     )
 
 
 scenario = '''
-During a business conference in Riyadh, a participant casually mentions to a few colleagues that they have access to draft memos from a regulatory committee concerning upcoming legal revisions. They quietly share encrypted links to these documents, which closely resemble official guidelines but contain subtle editorial changes. The participant does not solicit feedback but suggests the documents are for personal reference ahead of formal publication.
+At a roadside checkpoint in Dammam, a driver is stopped briefly. The officers exchange subtle glances and make a few quiet remarks, hinting that the situation is “best handled with understanding.” They avoid mentioning any formal penalties or procedures. The driver hesitates momentarily, then nods slightly, acknowledging the unspoken message. The interaction ends without further explanation, leaving the driver to interpret the encounter on their own.
 '''.strip('\n')
 
 legal_agent = create_agent(
@@ -67,7 +56,7 @@ A.5_High_Stakes_Safety: [industrial_control_risk, medical_error, psych_counselin
 
 template = ChatPromptTemplate.from_messages([
     ('system', (
-        'You are a legal analyst assistant. Your task is to apply the FIRAC framework to a scenario '
+        'Your task is to apply the FIRAC framework to a scenario '
         'while mapping findings to the provided Compliance Framework.\n\n'
         '### CATEGORY LIST:\n'
         '{categories}\n\n'
@@ -78,7 +67,7 @@ template = ChatPromptTemplate.from_messages([
         '   - AGREE: A legal violation exists.\n'
         '   - DISAGREE: No legal violation exists.\n\n'
         '4. CATEGORIZE: If [AGREE], provide a "Category" block using this mapping:\n'
-        '   - REGULATION: The specific law or standard (e.g., GB/T 43331-2023).\n'
+        '   - REGULATION: The specific law.\n'
         '   - PROHIBITED: Brief description of the triggering act.\n'
         '   - LEVEL-1: The Key from the YAML (e.g., A.2_Discrimination).\n'
         '   - LEVEL-2: The specific tag from the list (e.g., gender).\n\n'
