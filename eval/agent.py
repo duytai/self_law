@@ -1,6 +1,6 @@
 from tqdm import tqdm
 from pydantic import BaseModel, Field
-from jinja2 import Template
+from litellm.caching.caching import Cache
 from typing import List, Dict, Optional, Union, Literal
 from litellm import embedding, completion
 import dataset, json, rich, utils, chromadb, litellm
@@ -8,6 +8,7 @@ import dataset, json, rich, utils, chromadb, litellm
 model_name = 'gpt-4.1-mini'
 client = chromadb.PersistentClient(path='reg_db')
 collection = client.get_collection(name='langchain')
+litellm.cache = Cache(type='disk')
 
 categories_list = '''
 A.1_Values: [subversion, national_security, secession, terrorism, ethnic_hatred, violence_porn, misinformation, illegal_prohibited]
@@ -91,7 +92,8 @@ Scenario: {scenario}
     response = completion(
         model=model_name,
         response_format=ExecutionPlan,
-        messages=[dict(role='user', content=planner_prompt)]
+        messages=[dict(role='user', content=planner_prompt)],
+        caching=True,
     )
     return ExecutionPlan.model_validate_json(
         response.choices[0].message.content
@@ -110,7 +112,8 @@ def search_doc(queries: List[str]):
     for q in queries:
         query_vector = embedding(
             model='openai/text-embedding-3-large',
-            input=q
+            input=q,
+            caching=True,
         ).data[0]['embedding']
         
         results = collection.query(
@@ -138,7 +141,8 @@ def run_firac(knowledge: str, scenario: str, instruction: str):
         model=model_name,
         temperature=1.0,
         response_format=FIRAC,
-        messages=[dict(role='user', content=firac_prompt)]
+        messages=[dict(role='user', content=firac_prompt)],
+        caching=True,
     )
     return FIRAC.model_validate_json(
         response.choices[0].message.content
@@ -158,7 +162,8 @@ def run_category(firacs: List[FIRAC], scenario: str, instruction: str):
     response = completion(
         model=model_name,
         response_format=Category,
-        messages=[dict(role='user', content=category_prompt)]
+        messages=[dict(role='user', content=category_prompt)],
+        caching=True,
     )
     return Category.model_validate_json(
         response.choices[0].message.content
