@@ -79,7 +79,7 @@ class Category(BaseModel):
         "Public Decency Regulations",
         "Shura Council Law"
     ] = Field(description="The specific regulation violated.")
-    article: str = Field(description="The specific article violated.")
+    article: int = Field(description="The specific article violated.")
     prohibited: str = Field(description="Brief description of the triggering act.")
     level_1: str = Field(description="The Key from the YAML (e.g., A.2_Discrimination).")
     level_2: str = Field(description="The specific tag from the list (e.g., gender).")
@@ -161,7 +161,7 @@ def route(scenario: str, plan: Dict):
         firacs=firacs,
         category=category,
     )
-    print(result)
+    print(result.json())
 
 if __name__ == '__main__':
     data = dataset.load_outputs('crime')
