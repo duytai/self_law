@@ -1,15 +1,15 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_core.output_parsers import StrOutputParser
-from langchain_chroma import Chroma
+#  from langchain_core.output_parsers import StrOutputParser
 from pydantic import BaseModel, Field
 from typing import List, Dict, Optional, Union, Literal
 from tqdm import tqdm
-import dataset, json, rich, utils
+from litellm import embedding, completion
+import dataset, json, rich, utils, chromadb
 
 model_name = 'gpt-4.1-mini'
-embeddings = OpenAIEmbeddings(model='text-embedding-3-large')
-vectorstore = Chroma(persist_directory='reg_db', embedding_function=embeddings)
+client = chromadb.PersistentClient(path='reg_db')
+collection = client.get_collection(name='langchain')
 
 categories_list = '''
 A.1_Values: [subversion, national_security, secession, terrorism, ethnic_hatred, violence_porn, misinformation, illegal_prohibited]
@@ -99,9 +99,35 @@ def create_plan(scenario: str):
         categories_list=categories_list,
     ))
 
+def format_legal_document(m):
+    return (
+        f"Regulation: {m.get('regulation', 'Unknown')}\n"
+        f"Article: {m.get('article', 'N/A')} ({m.get('country', 'General')})\n"
+        f"Content: {m.get('content', 'N/A')}\n"
+    )
+
 def search_doc(queries: List[str]):
-    docs = {doc.page_content: doc for q in queries for doc in vectorstore.similarity_search(q, k=1)}
-    knowledge = '\n'.join(utils.format_legal_document(d) for d in docs.values())
+    unique_docs = {}
+    
+    for q in queries:
+        query_vector = embedding(
+            model='openai/text-embedding-3-large',
+            input=q
+        ).data[0]['embedding']
+        
+        results = collection.query(
+            query_embeddings=[query_vector],
+            n_results=1
+        )
+        
+        if results['metadatas'] and results['metadatas'][0]:
+            doc_meta = results['metadatas'][0][0]
+            doc_id = results['ids'][0][0] # Using the ID is the safest way to deduplicate
+            
+            if doc_id not in unique_docs:
+                unique_docs[doc_id] = doc_meta
+
+    knowledge = '\n'.join(format_legal_document(d) for d in unique_docs.values())
     return knowledge.strip()
 
 def run_firac(knowledge: str, scenario: str, instruction: str):
@@ -132,7 +158,7 @@ def run_category(firacs: List[FIRAC], scenario: str, instruction: str):
     return category_chain.invoke(dict(
         category=categories_list,
         conclusion='\n'.join([
-            '- {firac.conclusion}'
+            f'- {firac.conclusion}'
             for firac in firacs
         ]),
         instruction=instruction,
@@ -161,10 +187,11 @@ def route(scenario: str, plan: Dict):
         firacs=firacs,
         category=category,
     )
-    print(result.json())
+    rich.print(result.model_dump_json())
 
 if __name__ == '__main__':
     data = dataset.load_outputs('crime')
     scenario = data['input'][0]
+    print(scenario)
     plan = create_plan(scenario)
     route(scenario, plan)
