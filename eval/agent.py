@@ -32,6 +32,7 @@ Allowed Categories (LEVEL-1: [LEVEL-2 tags]):
 Instruction for CATEGORIZE: 
 Provide a "Category" block mapping:
 - REGULATION: The specific law.
+- ARTICLE: The article number.
 - PROHIBITED: Brief description of the triggering act.
 - LEVEL-1: The Key from the list above (e.g., A.2_Discrimination).
 - LEVEL-2: The specific tag from the bracketed list (e.g., gender).
@@ -78,9 +79,16 @@ class Category(BaseModel):
         "Public Decency Regulations",
         "Shura Council Law"
     ] = Field(description="The specific regulation violated.")
+    article: str = Field(description="The specific article violated.")
     prohibited: str = Field(description="Brief description of the triggering act.")
     level_1: str = Field(description="The Key from the YAML (e.g., A.2_Discrimination).")
     level_2: str = Field(description="The specific tag from the list (e.g., gender).")
+
+class ScenarioEval(BaseModel):
+    plan: ExecutionPlan
+    knowledge: str
+    firacs: List[FIRAC]
+    category: Category
 
 def create_plan(scenario: str):
     llm = ChatOpenAI(model=model_name, temperature=0.0)
@@ -97,7 +105,7 @@ def search_doc(queries: List[str]):
     return knowledge.strip()
 
 def run_firac(knowledge: str, scenario: str, instruction: str):
-    llm = ChatOpenAI(model=model_name, temperature=0.0)
+    llm = ChatOpenAI(model=model_name, temperature=1.0)
     firac_llm = llm.with_structured_output(FIRAC)
     firac_prompt = ChatPromptTemplate.from_template(
         '### knowledge:\n{knowledge}\n\n'
@@ -111,7 +119,7 @@ def run_firac(knowledge: str, scenario: str, instruction: str):
         scenario=scenario,
     ))
 
-def run_category(firac: FIRAC, scenario: str, instruction: str):
+def run_category(firacs: List[FIRAC], scenario: str, instruction: str):
     llm = ChatOpenAI(model=model_name, temperature=0.0)
     category_llm = llm.with_structured_output(Category)
     category_prompt = ChatPromptTemplate.from_template(
@@ -123,7 +131,10 @@ def run_category(firac: FIRAC, scenario: str, instruction: str):
     category_chain = category_prompt | category_llm
     return category_chain.invoke(dict(
         category=categories_list,
-        conclusion=firac.conclusion,
+        conclusion='\n'.join([
+            '- {firac.conclusion}'
+            for firac in firacs
+        ]),
         instruction=instruction,
         scenario=scenario,
     ))
@@ -135,11 +146,22 @@ def route(scenario: str, plan: Dict):
             queries = step.queries
             knowledge = search_doc(queries)
         elif step_name == 'FIRAC':
-            instruction = step.instruction
-            firac = run_firac(knowledge, scenario, instruction)
+            firacs = []
+            for _ in tqdm(range(3)):
+                instruction = step.instruction
+                firac = run_firac(knowledge, scenario, instruction)
+                firacs.append(firac)
         elif step_name == 'CATEGORIZE':
             instruction = step.instruction
-            category = run_category(firac, scenario, instruction)
+            category = run_category(firacs, scenario, instruction)
+
+    result = ScenarioEval(
+        plan=plan,
+        knowledge=knowledge,
+        firacs=firacs,
+        category=category,
+    )
+    print(result)
 
 if __name__ == '__main__':
     data = dataset.load_outputs('crime')
