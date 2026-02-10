@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 from litellm.caching.caching import Cache
 from typing import List, Dict, Optional, Union, Literal
 from litellm import embedding, completion
+from datasets import Dataset
 import dataset, json, rich, utils, chromadb, litellm
 
 model_name = 'gpt-4.1-mini'
@@ -103,7 +104,7 @@ def format_legal_document(m):
     return (
         f"Regulation: {m.get('regulation', 'Unknown')}\n"
         f"Article: {m.get('article', 'N/A')} ({m.get('country', 'General')})\n"
-        f"Content: {m.get('content', 'N/A')}\n"
+        f"Content: {m.get('content', 'N/A')}"
     )
 
 def search_doc(queries: List[str]):
@@ -178,7 +179,7 @@ def route(scenario: str, plan: Dict):
         elif step_name == 'FIRAC':
             firacs = []
             temperature = 0.0
-            for _ in tqdm(range(3)):
+            for _ in tqdm(range(3), desc='Voting'):
                 instruction = step.instruction
                 firac = run_firac(knowledge, scenario, instruction, temperature)
                 firacs.append(firac)
@@ -187,16 +188,27 @@ def route(scenario: str, plan: Dict):
             instruction = step.instruction
             category = run_category(firacs, scenario, instruction)
 
-    result = ScenarioEval(
+    return ScenarioEval(
         plan=plan,
         knowledge=knowledge,
         firacs=firacs,
         category=category,
     )
-    rich.print(result.model_dump_json())
 
 if __name__ == '__main__':
-    data = dataset.load_outputs('crime')
-    scenario = data['input'][0]
-    plan = create_plan(scenario)
-    route(scenario, plan)
+    names = [
+        "crime",
+        "audiovisual_media",
+        "basic_law_of_governance",
+        "combating_crimes_of_terrorism_and_its_financing",
+        "printed_materials_and_publication",
+        "public_decency",
+        "shura_council",
+    ]
+    for name in tqdm(names, desc='Regulation'):
+        data, ds = dataset.load_outputs(name), []
+        for scenario in tqdm(data['input'], desc='Scenario'):
+            plan = create_plan(scenario)
+            scenario_eval = route(scenario, plan)
+            ds.append(scenario_eval.model_dump())
+            Dataset.from_list(ds).to_json(f'output/firac_{name}.jsonl')
