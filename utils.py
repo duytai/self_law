@@ -23,3 +23,11 @@ def avg_similarity(data: List[str]):
     ]
     mean_similarity = lower_triangular_values.mean().item()
     print(f'[bold green]Sim mean: [/bold green] {mean_similarity}')
+
+def format_legal_document(doc):
+    m = doc.metadata
+    return (
+        f"Regulation: {m.get('regulation', 'Unknown')}\n"
+        f"Article: {m.get('article', 'N/A')} ({m.get('country', 'General')})\n"
+        f"Content: {doc.page_content.strip()}\n"
+    )
