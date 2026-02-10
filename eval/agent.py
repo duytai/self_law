@@ -131,7 +131,7 @@ def search_doc(queries: List[str]):
     knowledge = '\n'.join(format_legal_document(d) for d in unique_docs.values())
     return knowledge.strip()
 
-def run_firac(knowledge: str, scenario: str, instruction: str):
+def run_firac(knowledge: str, scenario: str, instruction: str, temperature: float):
     firac_prompt = (
         f'### knowledge:\n{knowledge}\n\n'
         f'### Instruction:\n{instruction}\n\n'
@@ -139,7 +139,7 @@ def run_firac(knowledge: str, scenario: str, instruction: str):
     )
     response = completion(
         model=model_name,
-        temperature=1.0,
+        temperature=temperature,
         response_format=FIRAC,
         messages=[dict(role='user', content=firac_prompt)],
         caching=True,
@@ -177,10 +177,12 @@ def route(scenario: str, plan: Dict):
             knowledge = search_doc(queries)
         elif step_name == 'FIRAC':
             firacs = []
+            temperature = 0.0
             for _ in tqdm(range(3)):
                 instruction = step.instruction
-                firac = run_firac(knowledge, scenario, instruction)
+                firac = run_firac(knowledge, scenario, instruction, temperature)
                 firacs.append(firac)
+                temperature += 0.5
         elif step_name == 'CATEGORIZE':
             instruction = step.instruction
             category = run_category(firacs, scenario, instruction)
