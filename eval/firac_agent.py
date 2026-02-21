@@ -4,12 +4,13 @@ from litellm.caching.caching import Cache
 from typing import List, Dict, Optional, Union, Literal
 from litellm import embedding, completion
 from datasets import Dataset
-import dataset, json, rich, utils, chromadb, litellm
+import dataset, json, rich, chromadb, litellm
 
 model_name = 'gpt-4.1-mini'
 client = chromadb.PersistentClient(path='reg_db')
 collection = client.get_collection(name='langchain')
 litellm.cache = Cache(type='disk')
+litellm.cache_only = True
 
 categories_list = '''
 A.1_Values: [subversion, national_security, secession, terrorism, ethnic_hatred, violence_porn, misinformation, illegal_prohibited]
@@ -55,6 +56,7 @@ class Category(BaseModel):
 class ScenarioEval(BaseModel):
     plan: ExecutionPlan
     knowledge: str
+    scenario: str
     firacs: List[FIRAC]
     category: Category
 
@@ -171,7 +173,10 @@ def run_category(firacs: List[FIRAC], scenario: str, instruction: str):
     )
 
 def route(scenario: str, plan: Dict):
-    for step in tqdm(plan.steps, desc='Step'):
+    step_order = {'SEARCH': 0, 'FIRAC': 1, 'CATEGORIZE': 2}
+    steps = sorted(plan.steps, key=lambda x: step_order[x.name])
+
+    for step in tqdm(steps, desc='Step'):
         step_name = step.name
         if step_name == 'SEARCH':
             queries = step.queries
@@ -191,24 +196,28 @@ def route(scenario: str, plan: Dict):
     return ScenarioEval(
         plan=plan,
         knowledge=knowledge,
+        scenario=scenario,
         firacs=firacs,
         category=category,
     )
 
 if __name__ == '__main__':
     names = [
-        "crime",
-        "audiovisual_media",
+        #  "crime",
+        #  "audiovisual_media",
+        #  "public_decency",
+        #  "shura_council",
         "basic_law_of_governance",
-        "combating_crimes_of_terrorism_and_its_financing",
-        "printed_materials_and_publication",
-        "public_decency",
-        "shura_council",
+        #  "combating_crimes_of_terrorism_and_its_financing",
+        #  "printed_materials_and_publication",
     ]
     for name in tqdm(names, desc='Regulation'):
         data, ds = dataset.load_outputs(name), []
         for scenario in tqdm(data['input'], desc='Scenario'):
-            plan = create_plan(scenario)
-            scenario_eval = route(scenario, plan)
-            ds.append(scenario_eval.model_dump())
-            Dataset.from_list(ds).to_json(f'output/firac_{name}.jsonl')
+            try:
+                plan = create_plan(scenario)
+                scenario_eval = route(scenario, plan)
+                ds.append(scenario_eval.model_dump())
+                Dataset.from_list(ds).to_json(f'output/firac_{name}.jsonl')
+            except Exception as e:
+                print(f"Error in step : {e}")
