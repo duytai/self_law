@@ -1,0 +1,566 @@
+regulation: Law of Combating Crimes of Terrorism and its Financing
+country: Saudi Arabia
+classification:
+  - article: 1
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Defines terrorism, terrorist financing, and related terms, establishing the
+      legal foundation for protecting national security and state stability.
+
+  - article: 2
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Classifies terrorism crimes as major crimes requiring detention, emphasizing
+      their seriousness to national security.
+
+  - article: 3
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Extends jurisdiction extraterritorially for acts threatening the Kingdom’s
+      political system, security, or interests.
+
+  - article: 4
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Assigns investigative authority to the Presidency of State Security,
+      centralizing counterterrorism enforcement.
+
+  - article: 5
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Regulates arrest and detention procedures, impacting personal liberty and
+      due process safeguards.
+
+  - article: 6
+    level_1: A.4_Rights_Infringement
+    level_2: privacy
+    reasoning: >
+      Authorizes compelled disclosure of records and restricts disclosure of such
+      requests, affecting privacy and confidentiality rights.
+
+  - article: 7
+    level_1: A.4_Rights_Infringement
+    level_2: privacy
+    reasoning: >
+      Permits search, seizure, and warrant exceptions, directly impacting
+      privacy and property rights.
+
+  - article: 8
+    level_1: A.4_Rights_Infringement
+    level_2: privacy
+    reasoning: >
+      Authorizes interception and monitoring of communications and electronic
+      data in terrorism investigations.
+
+  - article: 9
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Provides for provisional seizure of funds suspected of terrorism links,
+      regulating financial assets.
+
+  - article: 10
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Imposes travel bans and possible non-notification measures, restricting
+      freedom of movement.
+
+  - article: 11
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Allows suspension of prosecution in exchange for cooperation,
+      affecting prosecutorial discretion and procedural rights.
+
+  - article: 12
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Governs provisional release of detainees, impacting liberty rights.
+
+  - article: 13
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Permits provisional release of convicted persons under conditions,
+      affecting enforcement of penalties.
+
+  - article: 14
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Authorizes preventive security measures for released individuals to
+      mitigate security threats.
+
+  - article: 15
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Allows use of force by security officers in terrorism detection.
+
+  - article: 16
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Establishes indemnification petition procedures before litigation.
+
+  - article: 17
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates seizure of suspicious financial instruments by customs.
+
+  - article: 18
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Assigns prosecutorial authority before the competent court.
+
+  - article: 19
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Authorizes extended detention periods, directly impacting liberty rights.
+
+  - article: 20
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Permits restrictions on visits and communication during investigation.
+
+  - article: 21
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Allows restriction of access to legal counsel during investigation.
+
+  - article: 22
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Grants authority to trace funds subject to confiscation.
+
+  - article: 23
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Removes victim complaint requirement and regulates civil claims.
+
+  - article: 24
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Defines jurisdiction of the competent court over terrorism cases.
+
+  - article: 25
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Allows trial in absentia with retrial rights upon arrest.
+
+  - article: 26
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Consolidates jurisdiction over interrelated crimes involving terrorism.
+
+  - article: 27
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Permits protected witness procedures and limited disclosure.
+
+  - article: 28
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Mandates execution of provisional seizure of funds.
+
+  - article: 29
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Removes statute of limitations for terrorism crimes.
+
+  - article: 30
+    level_1: A.2_Discrimination
+    level_2: political_opinion
+    reasoning: >
+      Criminalizes defamatory assertions against the King or Crown Prince,
+      restricting political expression.
+
+  - article: 31
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes possession of weapons or explosives for terrorist purposes.
+
+  - article: 32
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes establishment or leadership of terrorist entities.
+
+  - article: 33
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes membership in terrorist entities.
+
+  - article: 34
+    level_1: A.2_Discrimination
+    level_2: political_opinion
+    reasoning: >
+      Criminalizes advocacy or promotion of terrorist ideology,
+      affecting freedom of expression.
+
+  - article: 35
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes recruitment and financing of terrorist entities.
+
+  - article: 36
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes terrorist training and preparation activities.
+
+  - article: 37
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes provision of weapons, materials, or documents to terrorists.
+
+  - article: 38
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes logistical support and facilitation for terrorist actors.
+
+  - article: 39
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes smuggling and manufacturing of weapons or materials
+      for terrorist use.
+
+  - article: 40
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes kidnapping or hostage-taking related to terrorism.
+
+  - article: 41
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes hijacking transportation for terrorist purposes.
+
+  - article: 42
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes destruction or disruption of infrastructure
+      in terrorist crimes.
+
+  - article: 43
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes use of digital platforms to facilitate terrorism.
+
+  - article: 44
+    level_1: A.2_Discrimination
+    level_2: political_opinion
+    reasoning: >
+      Criminalizes broadcasting false or malicious rumors for terrorist purposes,
+      potentially impacting speech.
+
+  - article: 45
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes organizing terrorist crimes abroad from within the Kingdom.
+
+  - article: 46
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes obstruction of justice in terrorism cases.
+
+  - article: 47
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Criminalizes terrorism financing and misuse of professional position.
+
+  - article: 48
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes travel for terrorist purposes.
+
+  - article: 49
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes liability and sanctions for corporate persons.
+
+  - article: 50
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Provides enhanced penalties, including death penalty, for severe terrorism crimes.
+
+  - article: 51
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes attempts and accomplice liability.
+
+  - article: 54
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes failure to report terrorism attempts.
+
+  - article: 55
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Criminalizes concealment of terrorism crimes or perpetrators.
+
+  - article: 56
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Allows mitigation of penalties for cooperation.
+
+  - article: 57
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Allows suspension of sentence execution under conditions.
+
+  - article: 58
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Mandates confiscation of funds, proceeds, and means of crime.
+
+  - article: 59
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Allows confiscation of equivalent-value assets if direct confiscation is not possible.
+
+  - article: 60
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Protects bona fide third-party property rights in confiscation cases.
+
+  - article: 61
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Authorizes invalidation of transactions undermining confiscation.
+
+  - article: 62
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates disposal and sharing of confiscated assets.
+
+  - article: 63
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Imposes risk assessment obligations on financial and non-financial entities.
+
+  - article: 64
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Requires due diligence measures based on terrorism financing risks.
+
+  - article: 65
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Imposes recordkeeping requirements on financial institutions.
+
+  - article: 66
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Requires enhanced due diligence for high-risk countries.
+
+  - article: 67
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Mandates internal compliance policies for terrorism financing prevention.
+
+  - article: 68
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates correspondent banking and wire transfer compliance.
+
+  - article: 69
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Requires monitoring and examination of complex or unusual transactions.
+
+  - article: 70
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes mandatory suspicious transaction reporting obligations.
+
+  - article: 71
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Prohibits tipping-off and grants good-faith reporting immunity.
+
+  - article: 72
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Authorizes international cooperation and information exchange.
+
+  - article: 73
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Regulates extradition for terrorism crimes.
+
+  - article: 74
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Establishes authority for mutual legal assistance.
+
+  - article: 75
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Implements UN Security Council resolutions on terrorism.
+
+  - article: 76
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Defines operational independence of the Financial Investigations authority.
+
+  - article: 77
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Authorizes financial information collection for analysis.
+
+  - article: 78
+    level_1: A.4_Rights_Infringement
+    level_2: privacy
+    reasoning: >
+      Imposes confidentiality obligations on financial investigation personnel.
+
+  - article: 79
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Authorizes forwarding of suspicious financial information to authorities.
+
+  - article: 80
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Permits exchange of information between financial investigations and authorities.
+
+  - article: 84
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Establishes national coordination policies on combating terrorism.
+
+  - article: 85
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Protects victims, witnesses, and officials involved in terrorism cases.
+
+  - article: 86
+    level_1: A.4_Rights_Infringement
+    level_2: privacy
+    reasoning: >
+      Regulates inter-agency information sharing while preserving confidentiality.
+
+  - article: 87
+    level_1: A.4_Rights_Infringement
+    level_2: privacy
+    reasoning: >
+      Imposes confidentiality obligations on persons applying the Law.
+
+  - article: 88
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Establishes rehabilitation centers for terrorism detainees.
+
+  - article: 89
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Establishes correction and rehabilitation facilities.
+
+  - article: 90
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Authorizes regulations governing detention and prison conditions.
+
+  - article: 91
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Provides evidentiary standard for intent and knowledge in terrorism crimes.
+
+  - article: 92
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Incorporates Anti-Money Laundering Law obligations where silent.
+
+  - article: 93
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Applies Criminal Procedures Law where this Law is silent.
+
+  - article: 94
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Repeals prior terrorism law and establishes legal supremacy.
+
+  - article: 95
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Mandates drafting and issuance of implementing regulations.
+
+  - article: 96
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Specifies entry into force of the Law.

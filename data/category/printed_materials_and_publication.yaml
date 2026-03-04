@@ -1,0 +1,335 @@
+regulation: Law of Printed Materials and Publication
+country: Saudi Arabia
+classification:
+  - article: 1
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Provides definitions of key actors and activities (publisher, printer, bookstore, etc.),
+      forming the regulatory foundation governing media and publishing activities.
+
+  - article: 2
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Specifies the commercial and professional activities subject to regulation,
+      establishing the scope of licensed media and publishing operations.
+
+  - article: 3
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Establishes ideological and moral objectives aligned with Islamic values
+      and cultural guidance, reflecting state value orientation.
+
+  - article: 4
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Requires licensing for regulated activities and sets renewal conditions,
+      constituting administrative regulatory control.
+
+  - article: 5
+    level_1: A.2_Discrimination
+    level_2: nationality_based
+    reasoning: >
+      Imposes nationality and age requirements for licensees, differentiating
+      eligibility based on nationality and personal status criteria.
+
+  - article: 6
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Grants specific institutions authority to publish materials within defined
+      scopes, regulating sector-based publishing rights.
+
+  - article: 7
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes licensing fees for regulated media activities,
+      constituting financial regulatory provisions.
+
+  - article: 8
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Recognizes freedom of expression within Sharia and legal limits,
+      defining conditional protection of expressive rights.
+
+  - article: 9
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Prohibits publication undermining religion, state security, public order,
+      or reputations, reflecting protection of national and moral interests.
+
+  - article: 10
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Requires bibliographical data in printed materials,
+      ensuring regulatory compliance standards.
+
+  - article: 11
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates transfer or sharing of licenses,
+      reinforcing administrative oversight.
+
+  - article: 12
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Governs succession and continuation of licensed activities,
+      ensuring regulatory continuity.
+
+  - article: 13
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Requires prior approval of printed materials by the Ministry,
+      establishing pre-publication censorship authority.
+
+  - article: 14
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Mandates record-keeping by printing presses,
+      facilitating regulatory supervision.
+
+  - article: 15
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Assigns liability for violations in printed materials,
+      establishing accountability framework.
+
+  - article: 16
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Requires deposit copies for printed materials,
+      constituting administrative compliance obligations.
+
+  - article: 17
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates advertising content in recorded media,
+      ensuring Ministry approval and oversight.
+
+  - article: 18
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Conditions approval of foreign printed materials on conformity
+      with religion, government system, and public morals.
+
+  - article: 19
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes procedures and timelines for approval or rejection
+      of foreign printed materials.
+
+  - article: 20
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates approval of Saudi publications printed abroad,
+      reinforcing administrative oversight.
+
+  - article: 21
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Provides exemptions from censorship for specific institutions,
+      defining regulatory boundaries.
+
+  - article: 22
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Authorizes implementing regulations governing import and distribution
+      of foreign materials.
+
+  - article: 23
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Requires Prime Minister approval for printing foreign newspapers,
+      reflecting sovereign control over foreign media presence.
+
+  - article: 24
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Protects local newspapers from censorship except in extraordinary cases,
+      defining limits on state interference.
+
+  - article: 25
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates licensing requirements for private newspaper publication,
+      establishing administrative control.
+
+  - article: 26
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Requires disclosure of publication details,
+      ensuring transparency and compliance.
+
+  - article: 27
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates newspaper naming rights and prevents confusion,
+      protecting market identity integrity.
+
+  - article: 28
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Authorizes regulation of subscription fees and advertising matters.
+
+  - article: 29
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Allows revocation of licenses for inactivity,
+      ensuring compliance with operational requirements.
+
+  - article: 30
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Restricts acceptance of funding without approval,
+      safeguarding against undue influence.
+
+  - article: 31
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Prohibits banning newspapers except under extraordinary circumstances,
+      limiting state censorship authority.
+
+  - article: 32
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates editorial advertising disclosures and approval processes.
+
+  - article: 33
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Establishes editorial responsibility and author accountability.
+
+  - article: 34
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Designates the official gazette of the state,
+      reflecting sovereign legal authority.
+
+  - article: 35
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Provides right to correction and compensation for false publications,
+      protecting reputational rights.
+
+  - article: 36
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Authorizes withdrawal of prohibited materials without compensation,
+      enforcing content control.
+
+  - article: 37
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Establishes adjudicative committee procedures,
+      ensuring procedural handling of violations.
+
+  - article: 38
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Specifies penalties including fines, suspension, closure,
+      and referral for serious violations involving state interests.
+
+  - article: 39
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Authorizes withdrawal or destruction of prohibited printed materials,
+      reinforcing enforcement powers.
+
+  - article: 40
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Establishes appellate procedures and final review mechanisms.
+
+  - article: 41
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Provides compensation if licensed materials are withdrawn unexpectedly,
+      protecting legitimate interests.
+
+  - article: 42
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates approval process for academic and intellectual works.
+
+  - article: 43
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Authorizes regulation and supervision of book fairs.
+
+  - article: 44
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Permits establishment of professional associations under Ministry oversight.
+
+  - article: 45
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Assigns enforcement authority to the Ministry,
+      reinforcing centralized regulatory power.
+
+  - article: 46
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Authorizes issuance of implementing regulations.
+
+  - article: 47
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Requires existing entities to adjust status to comply with the Law.
+
+  - article: 48
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Repeals prior conflicting law, establishing legal supremacy.
+
+  - article: 49
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Provides publication and entry-into-force provisions,
+      formalizing legal effectiveness.

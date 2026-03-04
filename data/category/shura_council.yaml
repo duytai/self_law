@@ -1,0 +1,214 @@
+regulation: Shura Council Law
+country: Saudi Arabia
+classification:
+  - article: 1
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Establishes the Shura Council on the basis of Quran and Sunna and
+      frames consultation as a governance principle, reinforcing the Islamic
+      constitutional foundation and unity of the State.
+
+  - article: 2
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Requires adherence to Islamic legislation sources and preservation of
+      State unity and national interests, directly safeguarding the State’s
+      constitutional and ideological framework.
+
+  - article: 3
+    level_1: A.2_Discrimination
+    level_2: gender
+    reasoning: >
+      Sets composition rules including a minimum 20% representation for women,
+      explicitly regulating membership based on gender criteria.
+
+  - article: 4
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes eligibility criteria (nationality, age, competence) for Council
+      membership, constituting institutional governance regulation.
+
+  - article: 5
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates resignation procedures for Council members, forming part of
+      administrative governance mechanisms.
+
+  - article: 6
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Provides accountability procedures for members failing to perform duties,
+      reflecting institutional disciplinary governance.
+
+  - article: 7
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates replacement of vacant membership positions by royal order,
+      forming part of institutional administrative structure.
+
+  - article: 8
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Prohibits exploitation of membership for personal interest,
+      addressing integrity and conflict-of-interest governance standards.
+
+  - article: 9
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Restricts combining membership with government or corporate management
+      roles, regulating conflicts of interest in public administration.
+
+  - article: 10
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates appointment and removal of Council leadership positions,
+      constituting institutional administrative governance.
+
+  - article: 11
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Requires an oath of loyalty to religion, King, and State, and protection
+      of State secrets, directly safeguarding national security and sovereignty.
+
+  - article: 12
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Determines the Council’s seat and allows relocation by royal discretion,
+      constituting organizational governance regulation.
+
+  - article: 13
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates term duration, renewal, and continuity mechanisms of the Council,
+      forming part of institutional governance structure.
+
+  - article: 14
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Provides for the King’s annual speech on domestic and foreign policy,
+      reinforcing centralized sovereign authority and State direction.
+
+  - article: 15
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Defines the consultative powers of the Council regarding public policy,
+      laws, treaties, and reports, forming core legislative governance functions.
+
+  - article: 16
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes quorum and voting procedures, regulating institutional
+      decision-making processes.
+
+  - article: 17
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates the interaction between the Shura Council, Council of Ministers,
+      and the King in approving resolutions, forming constitutional governance
+      coordination mechanisms.
+
+  - article: 18
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Requires royal decree for issuance and amendment of laws after Council review,
+      defining formal legislative procedure.
+
+  - article: 19
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Authorizes formation of standing and ad hoc committees,
+      regulating internal institutional structure.
+
+  - article: 20
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Permits committees to seek external expertise with approval,
+      constituting procedural governance regulation.
+
+  - article: 21
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes the general panel composition, regulating organizational hierarchy.
+
+  - article: 22
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Grants authority to summon government officials for discussion,
+      forming oversight and coordination procedures.
+
+  - article: 23
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Provides legislative initiative authority to propose or amend laws,
+      constituting institutional legislative regulation.
+
+  - article: 24
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Authorizes access to government documents for deliberation,
+      regulating oversight and information access mechanisms.
+
+  - article: 25
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Requires submission of annual performance reports to the King,
+      reinforcing accountability within institutional governance.
+
+  - article: 26
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Subjects Council employees to civil service laws,
+      integrating institutional administrative regulation.
+
+  - article: 27
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Provides for a special budget approved by the King,
+      regulating financial governance structure.
+
+  - article: 28
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Regulates financial auditing and account closure procedures,
+      forming part of fiscal governance mechanisms.
+
+  - article: 29
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Mandates issuance of Internal Regulations defining procedural and
+      disciplinary rules, structuring institutional order and function.
+
+  - article: 30
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Restricts amendment of the Law to formal promulgation procedures,
+      preserving constitutional legislative stability.

@@ -1,0 +1,117 @@
+regulation: Anti-Cyber Crime Law
+country: Saudi Arabia
+classification:
+  - article: 1
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Provides definitions of technical and legal terms forming the regulatory
+      foundation of the Law. It establishes the scope of application for cyber
+      activities and related offenses.
+
+  - article: 2
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Sets the objectives of combating cyber crimes, protecting public interest,
+      morals, national economy, and information security, which relate to national
+      stability and state interests.
+
+  - article: 3
+    level_1: A.4_Rights_Infringement
+    level_2: privacy
+    reasoning: >
+      Criminalizes unlawful access, interception, privacy invasion, blackmail,
+      and defamation, directly protecting individual privacy and personal rights.
+
+  - article: 4
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Addresses cyber fraud, financial deception, and illegal access to banking
+      and securities data, targeting economic and financial misconduct.
+
+  - article: 5
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Penalizes data destruction, service disruption, and network sabotage,
+      protecting digital infrastructure and operational integrity.
+
+  - article: 6
+    level_1: A.2_Discrimination
+    level_2: morality_based
+    reasoning: >
+      Criminalizes online content violating public morals, religious values,
+      and public order, as well as promotion of trafficking, drugs, and gambling,
+      reflecting morality-based regulatory enforcement.
+
+  - article: 7
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Targets cyber activities supporting terrorism or threatening state security
+      and national economy, directly relating to national security protection.
+
+  - article: 8
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes aggravated penalties for organized crime, abuse of public office,
+      exploitation of minors, and recidivism, reinforcing enforcement mechanisms.
+
+  - article: 9
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Criminalizes incitement, assistance, and collaboration in cyber crimes,
+      extending liability within the enforcement framework.
+
+  - article: 10
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Provides punishment for attempted cyber crimes, ensuring preventive
+      enforcement even when offenses are not completed.
+
+  - article: 11
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Establishes mitigation or exemption from punishment for voluntary disclosure,
+      reflecting procedural safeguards and prosecutorial discretion.
+
+  - article: 12
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Clarifies relationship with intellectual property laws and international
+      agreements, integrating the Law within broader regulatory frameworks.
+
+  - article: 13
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Provides for confiscation of tools and closure of websites used in crimes,
+      constituting enforcement and regulatory sanctions.
+
+  - article: 14
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Assigns technical support responsibilities to the Communications and
+      Information Technology Commission, strengthening cyber enforcement capacity.
+
+  - article: 15
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Designates prosecutorial authority for cyber crimes, ensuring centralized
+      state enforcement of cyber security measures.
+
+  - article: 16
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Governs publication and entry into force of the Law, establishing its
+      formal legal authority within the Kingdom.

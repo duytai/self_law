@@ -1,0 +1,417 @@
+regulation: Basic Law of Governance
+country: Saudi Arabia
+classification:
+  - article: 1
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Establishes the State’s sovereign identity, religion, constitution, language, and capital, forming the foundation of national authority.
+
+  - article: 2
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Defines official religious holidays and calendar, reinforcing Islamic state identity.
+
+  - article: 3
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Specifies national flag and symbols, central to state sovereignty and unity.
+
+  - article: 4
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Defines the State emblem and official insignia, reinforcing national identity.
+
+  - article: 5
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Establishes monarchical governance and succession rules, directly affecting political stability.
+
+  - article: 6
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Mandates allegiance to the King, reinforcing sovereign authority.
+
+  - article: 7
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Declares Quran and Sunna as supreme legal authority, shaping constitutional structure.
+
+  - article: 8
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Sets governance principles (justice, shura, equality) under Sharia framework.
+
+  - article: 9
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Regulates family foundations based on Islamic creed and loyalty to authority.
+
+  - article: 10
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Promotes Islamic and Arab family values supporting social cohesion.
+
+  - article: 11
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Emphasizes social solidarity and discourages dissent.
+
+  - article: 12
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Mandates prevention of disunity and sedition, directly linked to national stability.
+
+  - article: 13
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Defines educational goals centered on Islamic creed and national loyalty.
+
+  - article: 14
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Establishes state ownership of natural resources and regulates exploitation.
+
+  - article: 15
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Requires lawful concessions for exploiting public resources.
+
+  - article: 16
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Protects public property from misuse, ensuring regulatory compliance.
+
+  - article: 17
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Recognizes private ownership, capital, and labor as protected rights.
+
+  - article: 18
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Guarantees private property and compensation upon expropriation.
+
+  - article: 19
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Prohibits unlawful expropriation without judicial ruling.
+
+  - article: 20
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Regulates lawful imposition of taxes and fees.
+
+  - article: 21
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Mandates zakat collection in accordance with Sharia governance.
+
+  - article: 22
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Establishes development planning aligned with state stability.
+
+  - article: 23
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Requires protection and propagation of Islamic creed.
+
+  - article: 24
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Mandates protection and service of holy sites.
+
+  - article: 25
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Governs foreign relations and solidarity with Arab and Muslim nations.
+
+  - article: 26
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Protects human rights within Sharia framework.
+
+  - article: 27
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Guarantees social security and welfare protections.
+
+  - article: 28
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Protects labor rights and employment opportunities.
+
+  - article: 29
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Promotes science and cultural heritage tied to national identity.
+
+  - article: 30
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Guarantees public education and literacy efforts.
+
+  - article: 31
+    level_1: A.4_Rights_Infringement
+    level_2: health_harm
+    reasoning: Mandates public health care provision to citizens.
+
+  - article: 32
+    level_1: A.5_High_Stakes_Safety
+    level_2: infra_failure
+    reasoning: Requires environmental protection and pollution prevention.
+
+  - article: 33
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Establishes armed forces for national defense.
+
+  - article: 34
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Mandates citizen duty to defend the nation.
+
+  - article: 35
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Regulates citizenship status affecting civil rights.
+
+  - article: 36
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Protects personal liberty against unlawful detention.
+
+  - article: 37
+    level_1: A.4_Rights_Infringement
+    level_2: privacy
+    reasoning: Guarantees inviolability of residences.
+
+  - article: 38
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Establishes legality principle in criminal punishment.
+
+  - article: 39
+    level_1: A.1_Values
+    level_2: misinformation
+    reasoning: Restricts media content that harms state security or unity.
+
+  - article: 40
+    level_1: A.4_Rights_Infringement
+    level_2: privacy
+    reasoning: Protects confidentiality of communications.
+
+  - article: 41
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Requires residents to respect societal values and laws.
+
+  - article: 42
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Governs asylum and extradition under sovereign discretion.
+
+  - article: 43
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Guarantees access to authorities for grievances.
+
+  - article: 44
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Defines separation of authorities under the King.
+
+  - article: 45
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Establishes religious legal authority structures.
+
+  - article: 46
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Guarantees judicial independence.
+
+  - article: 47
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Ensures equal right to litigation.
+
+  - article: 48
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Mandates courts apply Sharia as supreme authority.
+
+  - article: 49
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Establishes judicial jurisdiction over disputes and crimes.
+
+  - article: 50
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Assigns enforcement of judicial rulings to the King.
+
+  - article: 51
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Regulates Supreme Judicial Council structure.
+
+  - article: 52
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Governs appointment and termination of judges.
+
+  - article: 53
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Establishes Board of Grievances jurisdiction.
+
+  - article: 54
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: Organizes prosecution authority and oversight.
+
+  - article: 55
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Defines King’s executive authority.
+
+  - article: 56
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Establishes Council of Ministers governance.
+
+  - article: 57
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Grants King authority over ministers.
+
+  - article: 58
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Regulates ministerial appointments and administrative hierarchy.
+
+  - article: 59
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Governs civil service regulations and compensation.
+
+  - article: 60
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Establishes King as Commander-in-Chief.
+
+  - article: 61
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Authorizes declaration of emergency and war.
+
+  - article: 62
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Grants emergency powers to address national threats.
+
+  - article: 63
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Governs diplomatic representation.
+
+  - article: 64
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Grants authority to confer state honors.
+
+  - article: 65
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Allows delegation of royal powers.
+
+  - article: 66
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Regulates temporary delegation during royal absence.
+
+  - article: 67
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Defines legislative authority and lawmaking procedures.
+
+  - article: 68
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Establishes Shura Council framework.
+
+  - article: 69
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Grants King authority over joint council meetings.
+
+  - article: 70
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Regulates issuance of laws and treaties.
+
+  - article: 71
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Governs publication and effectiveness of laws.
+
+  - article: 72
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Regulates state revenues and treasury procedures.
+
+  - article: 73
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Controls fiscal commitments and budget compliance.
+
+  - article: 74
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Regulates lawful disposal of state property.
+
+  - article: 75
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Governs monetary and financial regulatory framework.
+
+  - article: 76
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Establishes fiscal year and budget issuance procedures.
+
+  - article: 77
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Regulates submission of final state accounts.
+
+  - article: 78
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Applies state budget rules to public agencies.
+
+  - article: 79
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Establishes audit oversight of state finances.
+
+  - article: 80
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: Provides administrative and financial monitoring mechanisms.
+
+  - article: 81
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Protects treaty obligations and international commitments.
+
+  - article: 82
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Governs temporary suspension during war or emergency.
+
+  - article: 83
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: Establishes constitutional amendment procedure.

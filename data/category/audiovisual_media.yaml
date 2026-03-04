@@ -1,0 +1,173 @@
+regulation: Law of Audiovisual Media
+country: Saudi Arabia
+classification:
+  - article: 1
+    level_1: A.5_High_Stakes_Safety
+    level_2: unreliable_output
+    reasoning: >
+      Provides formal definitions and legal scope to ensure clarity and prevent
+      misinterpretation in regulatory enforcement, reducing risk of unreliable
+      regulatory application.
+
+  - article: 2
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Aligns audiovisual media activity with the Kingdom’s Media Policy,
+      reflecting state policy control and protection of national interests.
+
+  - article: 3
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Requires obtaining a license before engaging in audiovisual media activity,
+      regulating market entry and preventing unauthorized commercial operations.
+
+  - article: 4
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Subjects media professionals to regulatory and professional standards,
+      ensuring compliance within the regulated industry framework.
+
+  - article: 5
+    level_1: A.2_Discrimination
+    level_2: gender
+    reasoning: >
+      Requires female television anchors to wear modest attire, imposing a
+      gender-specific obligation and constituting gender-based discrimination.
+
+  - article: 6
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes operational and technical compliance requirements for licensees,
+      including fees, technical standards, and national resource prioritization.
+
+  - article: 7
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Governs issuance, renewal, amendment, suspension, and revocation of licenses
+      through governmental approval mechanisms.
+
+  - article: 8
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Grants regulatory authority to issue and manage audiovisual media licenses,
+      defining compliance criteria and procedures.
+
+  - article: 9
+    level_1: A.3_Commercial
+    level_2: monopoly_unfair_competition
+    reasoning: >
+      Prohibits transfer or merger of licenses without approval, regulating market
+      consolidation and ownership control.
+
+  - article: 10
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes rules for determining and collecting licensing and service fees.
+
+  - article: 11
+    level_1: A.5_High_Stakes_Safety
+    level_2: infra_failure
+    reasoning: >
+      Regulates frequency allocation and technical specifications for broadcasting
+      devices to prevent infrastructure or technical failures.
+
+  - article: 12
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Protects the rights of beneficiaries and licensees and establishes dispute
+      resolution mechanisms.
+
+  - article: 13
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Requires prior approval for unreleased media content before broadcasting,
+      enabling state oversight of sensitive content.
+
+  - article: 14
+    level_1: A.3_Commercial
+    level_2: monopoly_unfair_competition
+    reasoning: >
+      Prohibits actions negatively affecting the broadcasting market and regulates
+      competition-related matters.
+
+  - article: 15
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Authorizes action against foreign unlicensed channels broadcasting within
+      the Kingdom, protecting national regulatory sovereignty.
+
+  - article: 16
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Assigns enforcement authority to officials for detecting and recording
+      violations.
+
+  - article: 17
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes penalties such as fines, suspension, and revocation for
+      regulatory violations.
+
+  - article: 18
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Details administrative fines, suspension powers, seizure measures, and
+      appeal procedures.
+
+  - article: 19
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Defines jurisdiction and authority of the Preliminary Committee to impose
+      penalties and publish decisions.
+
+  - article: 20
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes final appellate authority for regulatory decisions.
+
+  - article: 21
+    level_1: A.4_Rights_Infringement
+    level_2: legal_rights
+    reasoning: >
+      Requires protection of employees’ interests and rights in case of license
+      revocation or suspension.
+
+  - article: 22
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Automatically recognizes certain channels as licensed and subjects them to
+      regulatory compliance.
+
+  - article: 23
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Authorizes issuance of implementing regulations and administrative decisions.
+
+  - article: 24
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Specifies the effective date of the Law and its enforceability.
+
+  - article: 25
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Repeals conflicting provisions to ensure regulatory consistency.

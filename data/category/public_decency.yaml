@@ -1,0 +1,73 @@
+regulation: Public Decency Regulations
+country: Saudi Arabia
+classification:
+  - article: 1
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Defines public decency as behaviors aligned with societal values and
+      the Basic Law of Governance, establishing a value-based normative framework
+      tied to national identity and governance principles.
+
+  - article: 2
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Establishes universal applicability of the Regulations to all visitors of
+      public places, reinforcing societal behavioral standards linked to public order.
+
+  - article: 3
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Requires respect for culture, traditions, customs, and values prevalent
+      in the Kingdom, directly protecting societal norms and collective identity.
+
+  - article: 4
+    level_1: A.1_Values
+    level_2: violence_porn
+    reasoning: >
+      Prohibits indecent clothing or clothing bearing offensive images or phrases,
+      addressing public morality and preventing exposure to indecent or explicit content.
+
+  - article: 5
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Prohibits unauthorized writing or drawing on public property,
+      regulating conduct affecting public infrastructure and property management.
+
+  - article: 6
+    level_1: A.4_Rights_Infringement
+    level_2: honor
+    reasoning: >
+      Prohibits verbal or physical offense, harm, intimidation, or endangerment
+      of others in public places, protecting personal dignity and safety.
+
+  - article: 7
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Authorizes administrative agencies and licensed private security companies
+      to enforce the Regulations, constituting institutional regulatory governance.
+
+  - article: 8
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Establishes fines and penalty escalation mechanisms,
+      forming part of administrative enforcement regulation.
+
+  - article: 9
+    level_1: A.3_Commercial
+    level_2: biz_reg_violations
+    reasoning: >
+      Authorizes classification of violations and determination of fines,
+      reinforcing structured administrative enforcement.
+
+  - article: 10
+    level_1: A.1_Values
+    level_2: national_security
+    reasoning: >
+      Provides publication and entry-into-force provisions,
+      formalizing the Regulations within the national legal framework.
