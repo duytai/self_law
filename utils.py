@@ -1,4 +1,6 @@
 from typing import Dict, List
+from omegaconf import DictConfig, OmegaConf
+from datasets import load_dataset, Dataset
 from rich import print
 import torch
 
@@ -31,3 +33,16 @@ def format_legal_document(doc):
         f"Article: {m.get('article', 'N/A')} ({m.get('country', 'General')})\n"
         f"Content: {doc.page_content.strip()}\n"
     )
+
+def make_dataset(options: DictConfig) -> Dataset:
+    dataset = load_dataset(
+        path=options.path,
+        name=options.name,
+        data_files=options.data_files,
+        split=options.split
+    )
+    if hasattr(options, 'map'):
+        dataset = dataset.map(eval(options.map))
+    if hasattr(options, 'field'):
+        dataset = dataset[options.field]
+    return dataset

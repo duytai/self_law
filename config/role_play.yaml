@@ -1,0 +1,25 @@
+dataset:
+  path: json
+  name: null
+  data_files:
+    - output/audiovisual_media.jsonl
+    - output/basic_law_of_governance.jsonl
+    - output/combating_crimes_of_terrorism_and_its_financing.jsonl
+    - output/crime.jsonl
+    - output/printed_materials_and_publication.jsonl
+    - output/public_decency.jsonl
+    - output/shura_council.jsonl
+  split: train
+  field: input
+
+question:
+  model: openai/gpt-4.1-mini
+  messages:
+    - role: user
+      content: |
+        Simulate a realistic multi-turn legal consultation between Steven and a legal expert named Jame.
+        Steven is the main character in the scenario.
+        Steven describes what he plans to do and asks whether his actions are legally acceptable.
+        Jame should explain the relevant laws, highlight potential consequences, and give clear, practical advice.
+        Make the dialogue natural, informative, and easy to follow, as if two people were speaking in real life.
+        Scenario: {{scenario}}
