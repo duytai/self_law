@@ -12,7 +12,7 @@ import hydra, dataset, litellm, numpy as np
 
 litellm.cache = Cache(type='disk')
 GPT4 = 'gpt-4.1-mini'
-QWEN3 = 'hosted_vllm/Qwen/Qwen3-8B'
+QWEN3 = 'hosted_vllm/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B'
 
 ape_template = '''
 Your task is to infer B's personality based on the following dialogue. The description of the personality should be
@@ -90,4 +90,4 @@ for name in names:
     ASR = accuracy_score(labels, preds)
     print(f'{name} - ASR: {ASR:0.3f}')
     ds.append(dict(name=name, count=len(violations), asr=ASR))
-    Dataset.from_list(ds).to_json('output/cia_jb.jsonl')
+    Dataset.from_list(ds).to_json('output/deepseek_cia_jb.jsonl')
